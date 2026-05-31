@@ -148,6 +148,59 @@ export const cleanupAbandonedBookings = () =>
   adminApi.post('/api/payments/abandoned-cleanup');
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Staff API
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const getAllStaff = (params?: { active?: boolean; designation?: string }) =>
+  api.get('/api/staff', { params });
+
+export const getStaffById = (id: string) => api.get(`/api/staff/${id}`);
+
+// Admin staff operations
+export const createStaff = (data: StaffFormData) => adminApi.post('/api/staff', data);
+export const updateStaff = (id: string, data: Partial<StaffFormData>) =>
+  adminApi.put(`/api/staff/${id}`, data);
+export const deleteStaff = (id: string) => adminApi.delete(`/api/staff/${id}`);
+export const toggleStaffActive = (id: string, is_active: boolean) =>
+  adminApi.patch(`/api/staff/${id}/status`, { is_active });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Settings API
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const getSettings = () => api.get('/api/settings');
+export const getPublicSettings = () => api.get('/api/settings/public');
+
+// Admin settings operations
+export const updateSettings = (data: SettingsFormData) => adminApi.put('/api/settings', data);
+export const updateBusinessHours = (data: BusinessHours[]) =>
+  adminApi.put('/api/settings/business-hours', { business_hours: data });
+export const addHoliday = (date: string, name: string) =>
+  adminApi.post('/api/settings/holidays', { date, name });
+export const removeHoliday = (date: string) =>
+  adminApi.delete(`/api/settings/holidays/${date}`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Reviews API
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const getReviews = (params?: { service_id?: string; staff_id?: string; rating?: number; page?: number; limit?: number }) =>
+  api.get('/api/reviews', { params });
+
+export const getServiceReviews = (serviceId: string) =>
+  api.get(`/api/services/${serviceId}/reviews`);
+
+export const createReview = (data: ReviewFormData) => api.post('/api/reviews', data);
+
+// Admin review operations
+export const getAllReviews = (params?: Record<string, string | number>) =>
+  adminApi.get('/api/admin/reviews', { params });
+export const moderateReview = (id: string, is_approved: boolean) =>
+  adminApi.patch(`/api/admin/reviews/${id}/moderate`, { is_approved });
+export const deleteReview = (id: string) => adminApi.delete(`/api/admin/reviews/${id}`);
+export const getReviewStats = () => adminApi.get('/api/admin/reviews/stats');
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Type Definitions
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -264,6 +317,139 @@ export interface AvailableSlotsResponse {
   date: string;
   slots: TimeSlot[];
   slot_duration_minutes: number;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Staff Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface Staff {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  designation: string;
+  specialties: string[];
+  experience_years: number;
+  rating: number;
+  image_url?: string;
+  bio?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StaffFormData {
+  name: string;
+  email?: string;
+  phone?: string;
+  designation: string;
+  specialties: string[];
+  experience_years: number;
+  rating: number;
+  image_url?: string;
+  bio?: string;
+  is_active?: boolean;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Settings Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface BusinessHours {
+  day: string;
+  day_index: number;
+  is_open: boolean;
+  open_time: string;
+  close_time: string;
+  slot_duration_minutes: number;
+}
+
+export interface Holiday {
+  date: string;
+  name: string;
+}
+
+export interface ShopSettings {
+  id: string;
+  salon_name: string;
+  salon_tagline?: string;
+  phone: string;
+  email?: string;
+  address: string;
+  city?: string;
+  pincode?: string;
+  website?: string;
+  facebook_url?: string;
+  instagram_url?: string;
+  whatsapp_number?: string;
+  timezone: string;
+  currency: string;
+  advance_booking_days: number;
+  max_bookings_per_slot: number;
+  allow_cod: boolean;
+  business_hours: BusinessHours[];
+  holidays: Holiday[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SettingsFormData {
+  salon_name?: string;
+  salon_tagline?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  pincode?: string;
+  website?: string;
+  facebook_url?: string;
+  instagram_url?: string;
+  whatsapp_number?: string;
+  timezone?: string;
+  currency?: string;
+  advance_booking_days?: number;
+  max_bookings_per_slot?: number;
+  allow_cod?: boolean;
+  slot_duration_minutes?: number;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Review Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface Review {
+  id: string;
+  booking_id: string;
+  service_id: string;
+  staff_id?: string;
+  customer_name: string;
+  rating: number;
+  comment?: string;
+  is_approved: boolean;
+  service?: Service;
+  staff?: Staff;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReviewFormData {
+  booking_id: string;
+  service_id: string;
+  staff_id?: string;
+  customer_name: string;
+  rating: number;
+  comment?: string;
+}
+
+export interface ReviewStats {
+  total_reviews: number;
+  average_rating: number;
+  rating_distribution: {
+    rating: number;
+    count: number;
+  }[];
+  recent_reviews: Review[];
 }
 
 export interface ApiResponse<T = unknown> {
