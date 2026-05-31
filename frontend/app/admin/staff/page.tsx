@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import {
-  getStaffMembers,
+  getAllStaff,
   createStaff,
   updateStaff,
   deleteStaff,
@@ -37,7 +37,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/select";
+} from "@/components/ui/tooltip";
 import {
   Plus,
   Pencil,
@@ -107,7 +107,7 @@ export default function AdminStaff() {
   const fetchStaff = async () => {
     setLoading(true);
     try {
-      const res = await getStaffMembers();
+      const res = await getAllStaff();
       setStaff(res.data.data || []);
     } catch {
       toast.error("Failed to load staff members");
