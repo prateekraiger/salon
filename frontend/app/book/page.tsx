@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 
 declare global {
   interface Window {
-    Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
+    Razorpay: any;
   }
 }
 interface RazorpayOptions {
