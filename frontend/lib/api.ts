@@ -46,6 +46,8 @@ adminApi.interceptors.response.use(
       if (typeof window !== 'undefined') {
         localStorage.removeItem('admin_token');
         localStorage.removeItem('admin_key');
+        // Force redirect to login page to re-prompt
+        window.location.href = '/admin';
       }
     }
     return Promise.reject(error);

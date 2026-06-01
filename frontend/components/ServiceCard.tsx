@@ -11,12 +11,12 @@ interface Props {
 }
 
 const categoryColors: Record<string, string> = {
-  Hair: "bg-purple-100 text-purple-700 border-purple-200",
-  Skin: "bg-pink-100 text-pink-700 border-pink-200",
-  Nails: "bg-rose-100 text-rose-700 border-rose-200",
-  Spa: "bg-blue-100 text-blue-700 border-blue-200",
-  Bridal: "bg-amber-100 text-amber-700 border-amber-200",
-  Makeup: "bg-orange-100 text-orange-700 border-orange-200",
+  Hair: "bg-canvas text-gold-champagne border-bronze-warm/30",
+  Skin: "bg-canvas text-gold-champagne border-bronze-warm/30",
+  Nails: "bg-canvas text-gold-champagne border-bronze-warm/30",
+  Spa: "bg-canvas text-gold-champagne border-bronze-warm/30",
+  Bridal: "bg-canvas text-gold-champagne border-bronze-warm/30",
+  Makeup: "bg-canvas text-gold-champagne border-bronze-warm/30",
 };
 
 const categoryEmojis: Record<string, string> = {
@@ -29,12 +29,12 @@ const categoryEmojis: Record<string, string> = {
 };
 
 const categoryGradients: Record<string, string> = {
-  Hair: "from-purple-50 to-purple-100/50",
-  Skin: "from-pink-50 to-pink-100/50",
-  Nails: "from-rose-50 to-rose-100/50",
-  Spa: "from-blue-50 to-blue-100/50",
-  Bridal: "from-amber-50 to-amber-100/50",
-  Makeup: "from-orange-50 to-orange-100/50",
+  Hair: "from-surface-onyx to-canvas",
+  Skin: "from-surface-onyx to-canvas",
+  Nails: "from-surface-onyx to-canvas",
+  Spa: "from-surface-onyx to-canvas",
+  Bridal: "from-surface-onyx to-canvas",
+  Makeup: "from-surface-onyx to-canvas",
 };
 
 const categoryEmojiIcons: Record<string, string> = {
@@ -47,12 +47,12 @@ const categoryEmojiIcons: Record<string, string> = {
 };
 
 export default function ServiceCard({ service }: Props) {
-  const colorClass = categoryColors[service.category] || "bg-muted text-muted-foreground";
-  const gradient = categoryGradients[service.category] || "from-muted to-muted/50";
+  const colorClass = categoryColors[service.category] || "bg-surface-onyx text-text-ivory border-outline/30";
+  const gradient = categoryGradients[service.category] || "from-surface-onyx to-canvas";
   const emoji = categoryEmojiIcons[service.category] || "✂️";
 
   return (
-    <Card className="service-card group overflow-hidden border-border/50 hover:border-primary/20 py-0 gap-0">
+    <Card className="glass-card-luxury group overflow-hidden border border-bronze-warm/15 hover:border-gold-champagne/40 transition-all duration-300 py-0 gap-0">
       {/* Image / Placeholder */}
       <div className={`relative h-44 bg-gradient-to-br ${gradient} overflow-hidden`}>
         {service.image_url ? (
@@ -65,47 +65,47 @@ export default function ServiceCard({ service }: Props) {
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center">
             <span className="text-5xl group-hover:scale-110 transition-transform duration-300">{emoji}</span>
-            <span className="mt-2.5 text-xs text-muted-foreground font-medium">{service.category}</span>
+            <span className="mt-2.5 text-xs text-bronze-warm font-medium uppercase tracking-widest">{service.category}</span>
           </div>
         )}
 
         <div className="absolute top-3 left-3">
-          <Badge variant="secondary" className={`${colorClass} border text-[11px] font-semibold`}>
+          <Badge variant="secondary" className={`${colorClass} border text-[10px] font-semibold tracking-wider uppercase bg-surface-onyx/80 backdrop-blur-sm`}>
             {service.category}
           </Badge>
         </div>
 
         <div className="absolute top-3 right-3">
-          <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm text-amber-600 border-0 shadow-sm text-[11px] font-semibold gap-1">
-            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+          <Badge variant="secondary" className="bg-surface-onyx/80 backdrop-blur-sm text-gold-champagne border border-gold-champagne/30 text-[10px] font-semibold gap-1">
+            <Star className="w-3 h-3 fill-gold-champagne text-gold-champagne" />
             4.9
           </Badge>
         </div>
       </div>
 
       {/* Content */}
-      <CardContent className="p-5 flex flex-col flex-1">
-        <h3 className="text-foreground font-semibold text-base leading-snug group-hover:text-primary transition-colors">
+      <CardContent className="p-5 flex flex-col flex-1 bg-surface-onyx text-text-ivory">
+        <h3 className="text-text-ivory font-serif font-bold text-lg leading-snug group-hover:text-gold-champagne transition-colors">
           {service.name}
         </h3>
-        <p className="text-muted-foreground text-sm mt-1.5 flex-1 line-clamp-2 leading-relaxed">
+        <p className="text-on-surface-variant text-sm mt-1.5 flex-1 line-clamp-2 leading-relaxed font-sans">
           {service.description}
         </p>
 
         <div className="mt-4 flex items-center justify-between">
-          <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Clock className="w-3.5 h-3.5 text-primary/70" />
+          <span className="flex items-center gap-1.5 text-sm text-bronze-warm font-sans">
+            <Clock className="w-3.5 h-3.5 text-bronze-warm" />
             {service.duration_minutes} min
           </span>
-          <span className="text-xl font-bold text-foreground">
+          <span className="text-xl font-bold text-gold-champagne font-serif">
             ₹{service.price.toLocaleString()}
           </span>
         </div>
 
-        <Button asChild className="mt-4 w-full rounded-xl gap-2" size="lg">
+        <Button asChild className="btn-ghost-luxury mt-4 w-full rounded-full gap-2 py-5 font-sans uppercase tracking-widest text-xs font-bold" size="lg">
           <Link href={`/book?service=${service.id}`}>
             Book Now
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 text-gold-champagne" />
           </Link>
         </Button>
       </CardContent>

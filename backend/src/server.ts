@@ -3,7 +3,7 @@
  * Main entry point for the backend API
  */
 
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -19,7 +19,7 @@ import servicesRouter from './routes/services';
 import bookingsRouter from './routes/bookings';
 import paymentsRouter from './routes/payments';
 
-const app = express();
+const app: Express = express();
 const PORT = env.PORT;
 
 // ─── Security & Middleware ──────────────────────────────────────────────────
@@ -77,7 +77,7 @@ app.use('/api/bookings', bookingsRouter);
 app.use('/api/payments', paymentsRouter);
 
 // ─── 404 Handler ────────────────────────────────────────────────────────────
-app.use('*', (_req: Request, res: Response) => {
+app.use((_req: Request, res: Response) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',

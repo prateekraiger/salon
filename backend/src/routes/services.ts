@@ -10,7 +10,7 @@ import { flexibleAdminAuth } from '../middleware/auth';
 import { createError } from '../middleware/errorHandler';
 import type { Service, ServiceFormData, ApiResponse } from '../types';
 
-const router = Router();
+const router: Router = Router();
 
 // GET /api/services - Get all active services (Public)
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {

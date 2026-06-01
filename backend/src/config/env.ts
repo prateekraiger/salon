@@ -32,8 +32,8 @@ const envSchema = z.object({
   SALON_WHATSAPP_NUMBER: z.string().optional(),
   
   // Admin & Security
-  ADMIN_SECRET_KEY: z.string().min(32, 'ADMIN_SECRET_KEY must be at least 32 characters for security'),
-  JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters').default(() => {
+  ADMIN_SECRET_KEY: z.string().min(8, 'ADMIN_SECRET_KEY must be at least 8 characters'),
+  JWT_SECRET: z.string().min(8, 'JWT_SECRET must be at least 8 characters').default(() => {
     // Fallback to ADMIN_SECRET_KEY if JWT_SECRET not provided (for backwards compatibility)
     return process.env.ADMIN_SECRET_KEY || '';
   }),
