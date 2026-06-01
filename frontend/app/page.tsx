@@ -65,8 +65,8 @@ export default function Home() {
             className="w-full h-full object-cover"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdUitl0KzuXW-KjkM7afUX6z7iEJdNoDupcRU9BLpLajeLR8BYuvHqJaCfGsSqfYb49s3xrSfgLseLmcvDE4pynxiPCTHacjMjoSmSvg_BEcNhkLOo7_Mdl8nGX45Bf_j6WzXplkqp_GJ9cIHOjNRnurloq7AAzWhbOeJ1GeDazZMhiESf6z6yrykEHoj1o-eu1MLBjeD_HoWQYNhGPX1XQN0plwrf_vsUVH0v2Hj0CCpq_1GLThRThBAWPrfcBiKi1_GKy22cW0I"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-canvas via-canvas/90 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-canvas via-canvas/90 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-canvas via-transparent to-transparent" />
         </div>
 
         {/* Decorative ambient blurs */}
@@ -217,7 +217,7 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              <div className="aspect-square overflow-hidden bg-gradient-to-br from-gold-champagne/5 via-bronze-warm/5 to-canvas border border-bronze-warm/20 rounded-2xl shadow-2xl flex flex-col items-center justify-center text-center p-8 sm:p-12 relative z-10">
+              <div className="aspect-square overflow-hidden bg-linear-to-br from-gold-champagne/5 via-bronze-warm/5 to-canvas border border-bronze-warm/20 rounded-2xl shadow-2xl flex flex-col items-center justify-center text-center p-8 sm:p-12 relative z-10">
                 <div className="text-7xl sm:text-8xl mb-6 select-none animate-float">✂️</div>
                 <h3 className="text-3xl font-serif font-bold text-gold-champagne mb-2">Luxe Salon</h3>
                 <p className="text-text-ivory text-base sm:text-lg font-serif italic">Premium Beauty & Wellness</p>
@@ -269,7 +269,7 @@ export default function Home() {
                 </Badge>
                 <Separator className="bg-bronze-warm/15 mb-4" />
                 <div className="flex items-center gap-3 text-left">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-champagne/20 to-bronze-warm/20 flex items-center justify-center font-serif font-bold text-sm text-gold-champagne">
+                  <div className="w-10 h-10 rounded-full bg-linear-to-br from-gold-champagne/20 to-bronze-warm/20 flex items-center justify-center font-serif font-bold text-sm text-gold-champagne">
                     {name.split(" ").map(n => n[0]).join("")}
                   </div>
                   <div>
@@ -284,7 +284,7 @@ export default function Home() {
       </section>
 
       {/* ─── CTA Banner Section ─────────────────────────────── */}
-      <section className="py-20 bg-gradient-to-r from-gold-champagne to-bronze-warm relative overflow-hidden border-y border-gold-champagne/30 w-full">
+      <section className="py-20 bg-linear-to-r from-gold-champagne to-bronze-warm relative overflow-hidden border-y border-gold-champagne/30 w-full">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E')] opacity-[0.04] pointer-events-none" />
         <div className="relative max-w-4xl mx-auto text-center px-6">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-canvas mb-4 tracking-tight leading-tight">

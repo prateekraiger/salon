@@ -54,7 +54,7 @@ export default function ServiceCard({ service }: Props) {
   return (
     <Card className="glass-card-luxury group overflow-hidden border border-bronze-warm/15 hover:border-gold-champagne/40 transition-all duration-300 py-0 gap-0">
       {/* Image / Placeholder */}
-      <div className={`relative h-44 bg-gradient-to-br ${gradient} overflow-hidden`}>
+      <div className={`relative h-44 bg-linear-to-br ${gradient} overflow-hidden`}>
         {service.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img

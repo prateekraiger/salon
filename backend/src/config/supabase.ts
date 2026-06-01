@@ -3,12 +3,11 @@
  * Provides typed admin and public clients
  */
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import env from './env';
-import type { Database } from '../types/database';
 
 // Admin client with service role key (bypasses RLS - use only in backend)
-export const supabaseAdmin: SupabaseClient<Database> = createClient<Database>(
+export const supabaseAdmin = createClient(
   env.SUPABASE_URL,
   env.SUPABASE_SERVICE_ROLE_KEY,
   {
@@ -20,7 +19,7 @@ export const supabaseAdmin: SupabaseClient<Database> = createClient<Database>(
 );
 
 // Public client with anon key (respects RLS)
-export const supabase: SupabaseClient<Database> = createClient<Database>(
+export const supabase = createClient(
   env.SUPABASE_URL,
   env.SUPABASE_ANON_KEY
 );
@@ -28,7 +27,7 @@ export const supabase: SupabaseClient<Database> = createClient<Database>(
 // Health check function
 export const checkSupabaseConnection = async (): Promise<boolean> => {
   try {
-    const { data, error } = await supabaseAdmin.from('services').select('id').limit(1);
+    const { data: _data, error } = await supabaseAdmin.from('services').select('id').limit(1);
     if (error) throw error;
     return true;
   } catch (error) {

@@ -51,7 +51,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // GET /api/services/categories - Get all service categories (Public)
-router.get('/categories', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/categories', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const { data, error } = await supabaseAdmin
       .from('services')
@@ -120,7 +120,7 @@ router.post(
           errors: errors.array().map((e) => ({
             msg: e.msg,
             param: e.type === 'field' ? e.path : undefined,
-            location: e.location,
+            location: (e as any).location,
           })),
         };
         res.status(400).json(response);

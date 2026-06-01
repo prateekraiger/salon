@@ -54,6 +54,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: any[];
       };
       bookings: {
         Row: {
@@ -122,6 +123,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: any[];
       };
       payments: {
         Row: {
@@ -157,6 +159,7 @@ export interface Database {
           payment_method?: string | null;
           created_at?: string;
         };
+        Relationships: any[];
       };
       processed_webhooks: {
         Row: {
@@ -180,16 +183,11 @@ export interface Database {
           event_type?: string;
           processed_at?: string;
         };
+        Relationships: any[];
       };
     };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      [_ in never]: never;
-    };
-    Enums: {
-      [_ in never]: never;
-    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
   };
 }

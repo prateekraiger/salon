@@ -27,9 +27,9 @@ export const createError = (message: string, status: number = 500): AppError => 
  */
 export const errorHandler = (
   err: AppError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   console.error('❌ Error:', err.message);
   

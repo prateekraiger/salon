@@ -11,7 +11,7 @@ import env from '../config/env';
 import { flexibleAdminAuth } from '../middleware/auth';
 import { createError } from '../middleware/errorHandler';
 import { isRazorpayConfigured } from '../config/env';
-import type { Payment, PaymentVerification, RazorpayWebhookEvent, ApiResponse, Booking } from '../types';
+import type { PaymentVerification, RazorpayWebhookEvent, ApiResponse, Booking } from '../types';
 
 // Dynamically import Razorpay to handle missing configuration
 let Razorpay: any;
@@ -21,7 +21,7 @@ try {
   console.warn('Razorpay not installed');
 }
 
-const router = Router();
+const router: Router = Router();
 
 // Initialize Razorpay client
 const getRazorpay = () => {
@@ -294,7 +294,7 @@ router.post('/:booking_id/retry', async (req: Request, res: Response, next: Next
 });
 
 // POST /api/payments/abandoned-cleanup - Clean up abandoned pending bookings (Admin only)
-router.post('/abandoned-cleanup', flexibleAdminAuth, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/abandoned-cleanup', flexibleAdminAuth, async (_req: Request, res: Response, next: NextFunction) => {
   try {
     // Find bookings that are:
     // 1. Pending payment status

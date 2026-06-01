@@ -12,7 +12,7 @@ import { createError } from '../middleware/errorHandler';
 import { sendWhatsAppNotification } from '../services/whatsapp';
 import type { Booking, BookingFormData, BookingFilters, ApiResponse, Service } from '../types';
 
-const router = Router();
+const router: Router = Router();
 
 // GET /api/bookings - Get all bookings (Admin only)
 router.get(
@@ -72,7 +72,7 @@ router.get(
 );
 
 // GET /api/bookings/stats - Get booking statistics (Admin only)
-router.get('/stats', flexibleAdminAuth, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/stats', flexibleAdminAuth, async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -219,7 +219,7 @@ router.post(
         errors: errors.array().map((e) => ({
           msg: e.msg,
           param: e.type === 'field' ? e.path : undefined,
-          location: e.location,
+          location: (e as any).location,
         })),
       };
       res.status(400).json(response);
