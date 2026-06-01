@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
 import {
   CalendarDays, TrendingUp, Clock, IndianRupee,
   Scissors, Users, ChevronRight, RefreshCw, Loader2
@@ -66,37 +65,37 @@ export default function AdminDashboard() {
   ] : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">Welcome back! Here's what's happening today.</p>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold text-foreground">Dashboard</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">Welcome back! Here&apos;s what&apos;s happening today.</p>
         </div>
-        <Button variant="outline" size="sm" onClick={fetchData} disabled={loading} className="gap-2 rounded-xl">
+        <Button variant="outline" size="sm" onClick={fetchData} disabled={loading} className="gap-2 rounded-xl text-xs">
           <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} />
-          Refresh
+          <span className="hidden sm:inline">Refresh</span>
         </Button>
       </div>
 
       {/* Stats Cards */}
       {loading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-28 rounded-2xl" />)}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-24 sm:h-28 rounded-2xl" />)}
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {statCards.map(({ label, value, icon: Icon, color }) => (
-            <Card key={label} className="border-border/30 py-5 gap-0">
-              <CardContent className="p-4 pt-0">
-                <div className="flex items-start justify-between mb-3">
-                  <div className={cn("w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center shadow", color)}>
-                    <Icon className="w-5 h-5 text-white" />
+            <Card key={label} className="border-border/30 py-4 sm:py-5 gap-0">
+              <CardContent className="p-3 sm:p-4 pt-0">
+                <div className="flex items-start justify-between mb-2 sm:mb-3">
+                  <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br flex items-center justify-center shadow", color)}>
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
-                  <TrendingUp className="w-4 h-4 text-green-500" />
+                  <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
                 </div>
-                <p className="text-xl sm:text-2xl font-extrabold text-foreground">{value}</p>
-                <p className="text-xs text-muted-foreground font-medium mt-0.5">{label}</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-extrabold text-foreground truncate">{value}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground font-medium mt-0.5">{label}</p>
               </CardContent>
             </Card>
           ))}
@@ -106,24 +105,24 @@ export default function AdminDashboard() {
       {/* Monthly Chart */}
       {stats?.monthly_data && (
         <Card className="border-border/30">
-          <CardHeader>
-            <CardTitle className="text-sm">Monthly Bookings (Last 6 Months)</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-xs sm:text-sm">Monthly Bookings (Last 6 Months)</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-end gap-3 h-32">
+            <div className="flex items-end gap-2 sm:gap-3 h-28 sm:h-32">
               {stats.monthly_data.map(({ month, count }) => {
                 const maxCount = Math.max(...stats.monthly_data.map((d) => d.count), 1);
                 const pct = (count / maxCount) * 100;
                 return (
                   <div key={month} className="flex-1 flex flex-col items-center gap-1">
-                    <span className="text-xs font-bold text-primary">{count}</span>
+                    <span className="text-[10px] sm:text-xs font-bold text-primary">{count}</span>
                     <div className="w-full rounded-t-lg bg-primary/10 flex items-end" style={{ height: '100%' }}>
                       <div
                         className="w-full rounded-t-lg bg-gradient-to-t from-primary to-accent chart-bar"
                         style={{ height: `${Math.max(pct, 4)}%`, minHeight: 4 }}
                       />
                     </div>
-                    <span className="text-[10px] text-muted-foreground text-center leading-tight truncate w-full">{month}</span>
+                    <span className="text-[8px] sm:text-[10px] text-muted-foreground text-center leading-tight truncate w-full">{month}</span>
                   </div>
                 );
               })}
@@ -134,8 +133,8 @@ export default function AdminDashboard() {
 
       {/* Recent Bookings */}
       <Card className="border-border/30 overflow-hidden py-0 gap-0">
-        <div className="p-5 flex items-center justify-between border-b border-border/50">
-          <h2 className="font-bold text-foreground text-sm">Recent Bookings</h2>
+        <div className="p-4 sm:p-5 flex items-center justify-between border-b border-border/50">
+          <h2 className="font-bold text-foreground text-xs sm:text-sm">Recent Bookings</h2>
           <Button variant="ghost" size="sm" asChild className="text-primary gap-1 text-xs">
             <Link href="/admin/bookings">
               View all <ChevronRight className="w-3.5 h-3.5" />
@@ -144,69 +143,114 @@ export default function AdminDashboard() {
         </div>
 
         {loading ? (
-          <div className="p-5 space-y-3">
+          <div className="p-4 sm:p-5 space-y-3">
             {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-14 rounded-xl" />)}
           </div>
         ) : recentBookings.length === 0 ? (
-          <div className="py-16 text-center">
+          <div className="py-12 sm:py-16 text-center">
             <Scissors className="w-10 h-10 mx-auto mb-3 text-muted-foreground/20" />
             <p className="text-muted-foreground text-sm">No bookings yet</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-secondary/50 border-b border-border/30">
-                <tr>
-                  {["Booking #", "Customer", "Service", "Date & Time", "Payment", "Status", "Action"].map((h) => (
-                    <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/30">
-                {recentBookings.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-secondary/30 transition-colors">
-                    <td className="px-4 py-3.5 font-mono font-semibold text-primary whitespace-nowrap text-xs">
-                      {booking.booking_number}
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <p className="font-medium text-foreground whitespace-nowrap text-xs">{booking.customer_name}</p>
-                      <p className="text-[11px] text-muted-foreground">{booking.customer_phone}</p>
-                    </td>
-                    <td className="px-4 py-3.5 text-foreground/80 whitespace-nowrap text-xs">
-                      {booking.services?.name || "—"}
-                    </td>
-                    <td className="px-4 py-3.5 whitespace-nowrap">
-                      <p className="text-foreground/80 text-xs">{new Date(booking.appointment_date).toLocaleDateString("en-IN")}</p>
-                      <p className="text-[11px] text-muted-foreground">{booking.appointment_time}</p>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <Badge variant="secondary" className={cn("text-[10px] font-semibold", booking.payment_method === "online" ? "badge-online" : "badge-cod")}>
-                        {booking.payment_method === "online" ? "Online" : "COD"}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <Badge variant="secondary" className={cn("text-[10px] font-semibold", STATUS_COLORS[booking.status] || "")}>
-                        {booking.status.replace("_", " ")}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <select
-                        value={booking.status}
-                        onChange={(e) => handleStatusChange(booking.id, e.target.value)}
-                        disabled={updatingId === booking.id}
-                        className="text-xs border border-border rounded-lg px-2 py-1.5 bg-background cursor-pointer focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/20 disabled:opacity-50"
-                      >
-                        {["pending", "confirmed", "in_progress", "completed", "cancelled"].map((s) => (
-                          <option key={s} value={s}>{s.replace("_", " ")}</option>
-                        ))}
-                      </select>
-                      {updatingId === booking.id && <Loader2 className="w-3 h-3 animate-spin inline ml-1 text-primary" />}
-                    </td>
+          <>
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-secondary/50 border-b border-border/30">
+                  <tr>
+                    {["Booking #", "Customer", "Service", "Date & Time", "Payment", "Status", "Action"].map((h) => (
+                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border/30">
+                  {recentBookings.map((booking) => (
+                    <tr key={booking.id} className="hover:bg-secondary/30 transition-colors">
+                      <td className="px-4 py-3.5 font-mono font-semibold text-primary whitespace-nowrap text-xs">
+                        {booking.booking_number}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <p className="font-medium text-foreground whitespace-nowrap text-xs">{booking.customer_name}</p>
+                        <p className="text-[11px] text-muted-foreground">{booking.customer_phone}</p>
+                      </td>
+                      <td className="px-4 py-3.5 text-foreground/80 whitespace-nowrap text-xs">
+                        {booking.services?.name || "—"}
+                      </td>
+                      <td className="px-4 py-3.5 whitespace-nowrap">
+                        <p className="text-foreground/80 text-xs">{new Date(booking.appointment_date).toLocaleDateString("en-IN")}</p>
+                        <p className="text-[11px] text-muted-foreground">{booking.appointment_time}</p>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <Badge variant="secondary" className={cn("text-[10px] font-semibold", booking.payment_method === "online" ? "badge-online" : "badge-cod")}>
+                          {booking.payment_method === "online" ? "Online" : "COD"}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <Badge variant="secondary" className={cn("text-[10px] font-semibold", STATUS_COLORS[booking.status] || "")}>
+                          {booking.status.replace("_", " ")}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <select
+                          value={booking.status}
+                          onChange={(e) => handleStatusChange(booking.id, e.target.value)}
+                          disabled={updatingId === booking.id}
+                          className="text-xs border border-border rounded-lg px-2 py-1.5 bg-background cursor-pointer focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/20 disabled:opacity-50"
+                        >
+                          {["pending", "confirmed", "in_progress", "completed", "cancelled"].map((s) => (
+                            <option key={s} value={s}>{s.replace("_", " ")}</option>
+                          ))}
+                        </select>
+                        {updatingId === booking.id && <Loader2 className="w-3 h-3 animate-spin inline ml-1 text-primary" />}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden divide-y divide-border/30">
+              {recentBookings.map((booking) => (
+                <div key={booking.id} className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-foreground text-sm truncate">{booking.customer_name}</p>
+                      <p className="text-xs text-muted-foreground">{booking.customer_phone}</p>
+                    </div>
+                    <Badge variant="secondary" className={cn("text-[10px] font-semibold shrink-0", STATUS_COLORS[booking.status] || "")}>
+                      {booking.status.replace("_", " ")}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="font-mono text-primary font-semibold">{booking.booking_number}</span>
+                      <span className="text-muted-foreground">&middot;</span>
+                      <span className="text-foreground/80 truncate">{booking.services?.name || "—"}</span>
+                    </div>
+                    <Badge variant="secondary" className={cn("text-[10px] font-semibold shrink-0", booking.payment_method === "online" ? "badge-online" : "badge-cod")}>
+                      {booking.payment_method === "online" ? "Online" : "COD"}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(booking.appointment_date).toLocaleDateString("en-IN")} &middot; {booking.appointment_time}
+                    </p>
+                    <select
+                      value={booking.status}
+                      onChange={(e) => handleStatusChange(booking.id, e.target.value)}
+                      disabled={updatingId === booking.id}
+                      className="text-xs border border-border rounded-lg px-2 py-1.5 bg-background cursor-pointer focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/20 disabled:opacity-50"
+                    >
+                      {["pending", "confirmed", "in_progress", "completed", "cancelled"].map((s) => (
+                        <option key={s} value={s}>{s.replace("_", " ")}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </Card>
     </div>

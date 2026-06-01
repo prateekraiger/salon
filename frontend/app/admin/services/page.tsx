@@ -92,25 +92,25 @@ export default function AdminServices() {
   }, {} as Record<string, Service[]>);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-foreground">Services</h1>
-          <p className="text-muted-foreground text-sm">{services.length} active services</p>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold text-foreground">Services</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm">{services.length} active services</p>
         </div>
-        <Button onClick={openCreate} className="gap-2 rounded-xl">
+        <Button onClick={openCreate} className="gap-2 rounded-xl text-xs sm:text-sm">
           <Plus className="w-4 h-4" /> Add Service
         </Button>
       </div>
 
       {/* Service List */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-40 rounded-2xl" />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-36 sm:h-40 rounded-2xl" />)}
         </div>
       ) : services.length === 0 ? (
-        <Card className="text-center border-border/30 py-16">
+        <Card className="text-center border-border/30 py-12 sm:py-16">
           <CardContent>
             <Scissors className="w-12 h-12 mx-auto mb-3 text-muted-foreground/20" />
             <p className="font-medium text-muted-foreground">No services yet</p>
@@ -120,7 +120,7 @@ export default function AdminServices() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           {Object.entries(grouped).map(([cat, items]) => (
             <div key={cat}>
               <div className="flex items-center gap-3 mb-3">
@@ -128,36 +128,39 @@ export default function AdminServices() {
                 <Badge variant="secondary" className="text-xs font-bold uppercase tracking-wider">{cat}</Badge>
                 <div className="h-px flex-1 bg-border/50" />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {items.map((s) => (
                   <Card key={s.id} className="border-border/30 hover:border-primary/20 transition-all group py-0 gap-0">
-                    <CardContent className="p-5">
-                      <div className="flex items-start justify-between mb-3">
+                    <CardContent className="p-4 sm:p-5">
+                      <div className="flex items-start justify-between mb-2 sm:mb-3 gap-2">
                         <div className="flex-1 min-w-0">
                           <p className="font-bold text-foreground truncate text-sm">{s.name}</p>
                           <p className="text-xs text-primary font-medium">{s.category}</p>
                         </div>
-                        <div className={cn(
-                          "w-2.5 h-2.5 rounded-full shrink-0 mt-1 ml-2",
-                          s.is_active ? "bg-green-400" : "bg-muted-foreground/30"
-                        )} />
+                        <div className="flex items-center gap-2 shrink-0">
+                          {/* Show edit/delete on mobile always, on desktop on hover */}
+                          <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                            <Button variant="ghost" size="icon" onClick={() => openEdit(s)}
+                              className="text-primary hover:bg-primary/10 h-8 w-8" title="Edit">
+                              <Pencil className="w-3.5 h-3.5" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id, s.name)}
+                              disabled={deletingId === s.id}
+                              className="text-destructive hover:bg-destructive/10 h-8 w-8" title="Deactivate">
+                              {deletingId === s.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                            </Button>
+                          </div>
+                          <div className={cn(
+                            "w-2.5 h-2.5 rounded-full shrink-0",
+                            s.is_active ? "bg-green-400" : "bg-muted-foreground/30"
+                          )} />
+                        </div>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2 mb-4 leading-relaxed">{s.description}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2 mb-3 sm:mb-4 leading-relaxed">{s.description}</p>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-lg font-extrabold text-foreground">₹{s.price.toLocaleString()}</p>
+                          <p className="text-base sm:text-lg font-extrabold text-foreground">&#8377;{s.price.toLocaleString()}</p>
                           <p className="text-xs text-muted-foreground">{s.duration_minutes} min</p>
-                        </div>
-                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon-sm" onClick={() => openEdit(s)}
-                            className="text-primary hover:bg-primary/10" title="Edit">
-                            <Pencil className="w-3.5 h-3.5" />
-                          </Button>
-                          <Button variant="ghost" size="icon-sm" onClick={() => handleDelete(s.id, s.name)}
-                            disabled={deletingId === s.id}
-                            className="text-destructive hover:bg-destructive/10" title="Deactivate">
-                            {deletingId === s.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
-                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -171,7 +174,7 @@ export default function AdminServices() {
 
       {/* ─── Modal ──────────────────────────────────────────────── */}
       <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent className="sm:max-w-lg rounded-2xl">
+        <DialogContent className="sm:max-w-lg rounded-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-auto">
           <DialogHeader>
             <DialogTitle>{editing ? "Edit Service" : "Add New Service"}</DialogTitle>
             <DialogDescription>
@@ -196,7 +199,7 @@ export default function AdminServices() {
               </div>
 
               <div className="space-y-2">
-                <Label>Price (₹) *</Label>
+                <Label>Price (&#8377;) *</Label>
                 <Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: parseFloat(e.target.value) || 0 })}
                   min="0" placeholder="499" className="h-10 rounded-xl" />
               </div>
@@ -229,11 +232,11 @@ export default function AdminServices() {
             </div>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowModal(false)} className="rounded-xl">
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setShowModal(false)} className="rounded-xl w-full sm:w-auto">
               Cancel
             </Button>
-            <Button onClick={handleSave} disabled={saving} className="rounded-xl gap-2">
+            <Button onClick={handleSave} disabled={saving} className="rounded-xl gap-2 w-full sm:w-auto">
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
               {saving ? "Saving..." : editing ? "Update Service" : "Create Service"}
             </Button>

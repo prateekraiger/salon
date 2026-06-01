@@ -206,25 +206,25 @@ export default function AdminStaff() {
   });
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-foreground">
+          <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold text-foreground">
             Staff Management
           </h1>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-xs sm:text-sm">
             {staff.length} team members ·{" "}
             {staff.filter((s) => s.is_active).length} active
           </p>
         </div>
-        <Button onClick={openCreate} className="gap-2 rounded-xl w-full sm:w-auto">
+        <Button onClick={openCreate} className="gap-2 rounded-xl w-full sm:w-auto text-xs sm:text-sm">
           <Plus className="w-4 h-4" /> Add Staff Member
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {[
           {
             label: "Total Staff",
@@ -257,14 +257,14 @@ export default function AdminStaff() {
             color: "bg-amber-500",
           },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="border-border/30 py-4 gap-0">
-            <CardContent className="p-4 pt-0 flex items-center gap-3">
-              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center text-white", color)}>
-                <Icon className="w-5 h-5" />
+          <Card key={label} className="border-border/30 py-3 sm:py-4 gap-0">
+            <CardContent className="p-3 sm:p-4 pt-0 flex items-center gap-2 sm:gap-3">
+              <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-white", color)}>
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div>
-                <p className="text-lg font-extrabold text-foreground">{value}</p>
-                <p className="text-xs text-muted-foreground">{label}</p>
+              <div className="min-w-0">
+                <p className="text-base sm:text-lg font-extrabold text-foreground truncate">{value}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{label}</p>
               </div>
             </CardContent>
           </Card>
@@ -421,7 +421,7 @@ export default function AdminStaff() {
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center justify-between pt-3 border-t border-border/30">
+                <div className="flex items-center justify-between pt-3 border-t border-border/30 gap-2">
                   <Badge
                     variant={s.is_active ? "default" : "secondary"}
                     className={cn(
@@ -436,19 +436,19 @@ export default function AdminStaff() {
                   <div className="flex gap-1">
                     <Button
                       variant="ghost"
-                      size="icon-sm"
+                      size="icon"
                       onClick={() => openEdit(s)}
-                      className="text-primary hover:bg-primary/10"
+                      className="text-primary hover:bg-primary/10 h-8 w-8"
                       title="Edit"
                     >
                       <Pencil className="w-3.5 h-3.5" />
                     </Button>
                     <Button
                       variant="ghost"
-                      size="icon-sm"
+                      size="icon"
                       onClick={() => handleDelete(s.id, s.name)}
                       disabled={deletingId === s.id}
-                      className="text-destructive hover:bg-destructive/10"
+                      className="text-destructive hover:bg-destructive/10 h-8 w-8"
                       title="Remove"
                     >
                       {deletingId === s.id ? (

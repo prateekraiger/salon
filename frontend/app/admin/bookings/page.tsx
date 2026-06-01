@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { getAllBookings, updateBookingStatus, cancelBooking, Booking } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -86,130 +85,182 @@ export default function AdminBookings() {
   );
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-foreground">Bookings</h1>
-          <p className="text-muted-foreground text-sm">{total} total bookings</p>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold text-foreground">Bookings</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm">{total} total bookings</p>
         </div>
-        <Button variant="outline" size="sm" onClick={fetchBookings} disabled={loading} className="gap-2 rounded-xl">
-          <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} /> Refresh
+        <Button variant="outline" size="sm" onClick={fetchBookings} disabled={loading} className="gap-2 rounded-xl text-xs">
+          <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} />
+          <span className="hidden sm:inline">Refresh</span>
         </Button>
       </div>
 
       {/* Filters */}
       <Card className="border-border/30 py-0 gap-0">
-        <CardContent className="p-3 sm:p-4 flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 border border-border rounded-xl px-3 py-2 bg-background flex-1 min-w-[200px]">
+        <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row gap-3">
+          <div className="flex items-center gap-2 border border-border rounded-xl px-3 py-2 bg-background flex-1 min-w-0">
             <Search className="w-4 h-4 text-muted-foreground shrink-0" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name, phone, booking #..."
+              placeholder="Search name, phone, booking #..."
               className="text-sm bg-transparent outline-none w-full text-foreground placeholder:text-muted-foreground"
             />
           </div>
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-muted-foreground hidden sm:block" />
             <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-              className="border border-border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:border-primary text-foreground">
+              className="border border-border rounded-xl px-3 py-2 text-xs sm:text-sm bg-background focus:outline-none focus:border-primary text-foreground flex-1 sm:flex-none">
               {STATUSES.map((s) => <option key={s} value={s}>{s === "all" ? "All Status" : s.replace("_", " ")}</option>)}
             </select>
-          </div>
-          <div>
             <select value={paymentFilter} onChange={(e) => { setPaymentFilter(e.target.value); setPage(1); }}
-              className="border border-border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:border-primary text-foreground">
+              className="border border-border rounded-xl px-3 py-2 text-xs sm:text-sm bg-background focus:outline-none focus:border-primary text-foreground flex-1 sm:flex-none">
               {PAYMENT_METHODS.map((m) => <option key={m} value={m}>{m === "all" ? "All Payments" : m.toUpperCase()}</option>)}
             </select>
           </div>
         </CardContent>
       </Card>
 
-      <div className="flex gap-5">
-        {/* Table */}
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-5">
+        {/* Main Content */}
         <Card className={cn("border-border/30 overflow-hidden flex-1 py-0 gap-0", selectedBooking && "hidden lg:block")}>
           {loading ? (
-            <div className="p-5 space-y-3">
+            <div className="p-4 sm:p-5 space-y-3">
               {Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-14 rounded-xl" />)}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="py-20 text-center">
+            <div className="py-16 sm:py-20 text-center">
               <Scissors className="w-10 h-10 mx-auto mb-3 text-muted-foreground/20" />
               <p className="text-muted-foreground text-sm">No bookings found</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-secondary/50 border-b border-border/30">
-                  <tr>
-                    {["Booking #", "Customer", "Service", "Date", "Amount", "Payment", "Status", "Actions"].map((h) => (
-                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/30">
-                  {filtered.map((b) => (
-                    <tr key={b.id}
-                      className={cn("hover:bg-secondary/30 transition-colors cursor-pointer", selectedBooking?.id === b.id && "bg-primary/5")}
-                      onClick={() => setSelectedBooking(b)}>
-                      <td className="px-4 py-3 font-mono text-xs font-bold text-primary whitespace-nowrap">{b.booking_number}</td>
-                      <td className="px-4 py-3">
-                        <p className="font-medium text-foreground text-xs">{b.customer_name}</p>
-                        <p className="text-[11px] text-muted-foreground">{b.customer_phone}</p>
-                      </td>
-                      <td className="px-4 py-3 text-foreground/80 whitespace-nowrap text-xs">{b.services?.name || "—"}</td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <p className="text-foreground/80 text-xs">{new Date(b.appointment_date).toLocaleDateString("en-IN")}</p>
-                        <p className="text-[11px] text-muted-foreground">{b.appointment_time}</p>
-                      </td>
-                      <td className="px-4 py-3 font-bold text-foreground whitespace-nowrap text-xs">₹{b.total_amount?.toLocaleString()}</td>
-                      <td className="px-4 py-3">
-                        <Badge variant="secondary" className={cn("text-[10px] font-semibold", b.payment_method === "online" ? "badge-online" : "badge-cod")}>
-                          {b.payment_method === "online" ? "Online" : "COD"}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3">
-                        <Badge variant="secondary" className={cn("text-[10px] font-semibold", STATUS_COLORS[b.status] || "")}>
-                          {b.status.replace("_", " ")}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center gap-1">
-                          <Button variant="ghost" size="icon-sm" onClick={() => setSelectedBooking(b)} title="View" className="text-blue-600 hover:bg-blue-50">
-                            <Eye className="w-3.5 h-3.5" />
-                          </Button>
-                          {b.status !== "cancelled" && b.status !== "completed" && (
-                            <>
-                              <Button variant="ghost" size="icon-sm" onClick={() => handleStatusUpdate(b.id, "confirmed")}
-                                disabled={updatingId === b.id} title="Confirm" className="text-green-600 hover:bg-green-50">
-                                <CheckCircle className="w-3.5 h-3.5" />
-                              </Button>
-                              <Button variant="ghost" size="icon-sm" onClick={() => handleCancel(b.id)}
-                                disabled={updatingId === b.id} title="Cancel" className="text-destructive hover:bg-destructive/5">
-                                <XCircle className="w-3.5 h-3.5" />
-                              </Button>
-                            </>
-                          )}
-                          {updatingId === b.id && <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />}
-                        </div>
-                      </td>
+            <>
+              {/* Desktop Table */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-secondary/50 border-b border-border/30">
+                    <tr>
+                      {["Booking #", "Customer", "Service", "Date", "Amount", "Payment", "Status", "Actions"].map((h) => (
+                        <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">{h}</th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-border/30">
+                    {filtered.map((b) => (
+                      <tr key={b.id}
+                        className={cn("hover:bg-secondary/30 transition-colors cursor-pointer", selectedBooking?.id === b.id && "bg-primary/5")}
+                        onClick={() => setSelectedBooking(b)}>
+                        <td className="px-4 py-3 font-mono text-xs font-bold text-primary whitespace-nowrap">{b.booking_number}</td>
+                        <td className="px-4 py-3">
+                          <p className="font-medium text-foreground text-xs">{b.customer_name}</p>
+                          <p className="text-[11px] text-muted-foreground">{b.customer_phone}</p>
+                        </td>
+                        <td className="px-4 py-3 text-foreground/80 whitespace-nowrap text-xs">{b.services?.name || "—"}</td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <p className="text-foreground/80 text-xs">{new Date(b.appointment_date).toLocaleDateString("en-IN")}</p>
+                          <p className="text-[11px] text-muted-foreground">{b.appointment_time}</p>
+                        </td>
+                        <td className="px-4 py-3 font-bold text-foreground whitespace-nowrap text-xs">&#8377;{b.total_amount?.toLocaleString()}</td>
+                        <td className="px-4 py-3">
+                          <Badge variant="secondary" className={cn("text-[10px] font-semibold", b.payment_method === "online" ? "badge-online" : "badge-cod")}>
+                            {b.payment_method === "online" ? "Online" : "COD"}
+                          </Badge>
+                        </td>
+                        <td className="px-4 py-3">
+                          <Badge variant="secondary" className={cn("text-[10px] font-semibold", STATUS_COLORS[b.status] || "")}>
+                            {b.status.replace("_", " ")}
+                          </Badge>
+                        </td>
+                        <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="icon" onClick={() => setSelectedBooking(b)} title="View" className="text-blue-600 hover:bg-blue-50 h-8 w-8">
+                              <Eye className="w-3.5 h-3.5" />
+                            </Button>
+                            {b.status !== "cancelled" && b.status !== "completed" && (
+                              <>
+                                <Button variant="ghost" size="icon" onClick={() => handleStatusUpdate(b.id, "confirmed")}
+                                  disabled={updatingId === b.id} title="Confirm" className="text-green-600 hover:bg-green-50 h-8 w-8">
+                                  <CheckCircle className="w-3.5 h-3.5" />
+                                </Button>
+                                <Button variant="ghost" size="icon" onClick={() => handleCancel(b.id)}
+                                  disabled={updatingId === b.id} title="Cancel" className="text-destructive hover:bg-destructive/5 h-8 w-8">
+                                  <XCircle className="w-3.5 h-3.5" />
+                                </Button>
+                              </>
+                            )}
+                            {updatingId === b.id && <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden divide-y divide-border/30">
+                {filtered.map((b) => (
+                  <div key={b.id} className="p-4 space-y-3" onClick={() => setSelectedBooking(b)}>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-foreground text-sm truncate">{b.customer_name}</p>
+                        <p className="text-xs text-muted-foreground">{b.customer_phone}</p>
+                      </div>
+                      <Badge variant="secondary" className={cn("text-[10px] font-semibold shrink-0", STATUS_COLORS[b.status] || "")}>
+                        {b.status.replace("_", " ")}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs flex-wrap">
+                      <span className="font-mono text-primary font-semibold">{b.booking_number}</span>
+                      <span className="text-muted-foreground">&middot;</span>
+                      <span className="text-foreground/80 truncate">{b.services?.name || "—"}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 text-xs">
+                        <span className="text-muted-foreground">
+                          {new Date(b.appointment_date).toLocaleDateString("en-IN")} &middot; {b.appointment_time}
+                        </span>
+                      </div>
+                      <span className="text-sm font-bold text-foreground">&#8377;{b.total_amount?.toLocaleString()}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2" onClick={(e) => e.stopPropagation()}>
+                      <Badge variant="secondary" className={cn("text-[10px] font-semibold", b.payment_method === "online" ? "badge-online" : "badge-cod")}>
+                        {b.payment_method === "online" ? "Online" : "COD"}
+                      </Badge>
+                      <div className="flex items-center gap-1">
+                        {b.status !== "cancelled" && b.status !== "completed" && (
+                          <>
+                            <Button variant="ghost" size="icon" onClick={() => handleStatusUpdate(b.id, "confirmed")}
+                              disabled={updatingId === b.id} className="text-green-600 hover:bg-green-50 h-8 w-8">
+                              <CheckCircle className="w-3.5 h-3.5" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleCancel(b.id)}
+                              disabled={updatingId === b.id} className="text-destructive hover:bg-destructive/5 h-8 w-8">
+                              <XCircle className="w-3.5 h-3.5" />
+                            </Button>
+                          </>
+                        )}
+                        {updatingId === b.id && <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="p-4 border-t border-border/30 flex items-center justify-between">
-              <p className="text-xs text-muted-foreground">Page {page} of {totalPages}</p>
+            <div className="p-3 sm:p-4 border-t border-border/30 flex items-center justify-between">
+              <p className="text-[10px] sm:text-xs text-muted-foreground">Page {page} of {totalPages}</p>
               <div className="flex gap-2">
-                <Button variant="outline" size="icon-sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+                <Button variant="outline" size="icon" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="h-8 w-8">
                   <ChevronLeft className="w-4 h-4" />
                 </Button>
-                <Button variant="outline" size="icon-sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
+                <Button variant="outline" size="icon" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="h-8 w-8">
                   <ChevronRight className="w-4 h-4" />
                 </Button>
               </div>
@@ -222,16 +273,16 @@ export default function AdminBookings() {
           <Card className="w-full lg:w-80 shrink-0 border-border/30 overflow-hidden self-start animate-slide-in-right py-0 gap-0">
             <div className="p-4 border-b border-border/30 flex items-center justify-between bg-primary/5">
               <p className="font-bold text-foreground text-sm">Booking Details</p>
-              <Button variant="ghost" size="icon-sm" onClick={() => setSelectedBooking(null)}>
+              <Button variant="ghost" size="icon" onClick={() => setSelectedBooking(null)} className="h-8 w-8">
                 <X className="w-4 h-4" />
               </Button>
             </div>
-            <div className="p-5 space-y-4 text-sm">
+            <div className="p-4 sm:p-5 space-y-4 text-sm">
               <div>
                 <p className="text-xs text-muted-foreground">Booking Number</p>
                 <p className="font-mono font-bold text-primary">{selectedBooking.booking_number}</p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <p className="text-xs text-muted-foreground">Customer</p>
                   <p className="font-semibold text-foreground text-xs">{selectedBooking.customer_name}</p>
@@ -243,7 +294,7 @@ export default function AdminBookings() {
                 {selectedBooking.customer_email && (
                   <div className="col-span-2">
                     <p className="text-xs text-muted-foreground">Email</p>
-                    <p className="font-medium text-foreground/80 text-xs">{selectedBooking.customer_email}</p>
+                    <p className="font-medium text-foreground/80 text-xs truncate">{selectedBooking.customer_email}</p>
                   </div>
                 )}
                 <div>
@@ -252,7 +303,7 @@ export default function AdminBookings() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Amount</p>
-                  <p className="font-bold text-primary text-xs">₹{selectedBooking.total_amount?.toLocaleString()}</p>
+                  <p className="font-bold text-primary text-xs">&#8377;{selectedBooking.total_amount?.toLocaleString()}</p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Date</p>
