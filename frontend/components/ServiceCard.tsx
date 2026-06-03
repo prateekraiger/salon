@@ -1,114 +1,103 @@
 "use client";
-import Link from "next/link";
-import { Clock, Star, ChevronRight } from "lucide-react";
-import { Service } from "@/lib/api";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
-interface Props {
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Clock, ArrowRight, Sparkles } from "lucide-react";
+import { Service } from "@/lib/api";
+
+interface ServiceCardProps {
   service: Service;
 }
 
-const categoryColors: Record<string, string> = {
-  Hair: "bg-canvas text-gold-champagne border-bronze-warm/30",
-  Skin: "bg-canvas text-gold-champagne border-bronze-warm/30",
-  Nails: "bg-canvas text-gold-champagne border-bronze-warm/30",
-  Spa: "bg-canvas text-gold-champagne border-bronze-warm/30",
-  Bridal: "bg-canvas text-gold-champagne border-bronze-warm/30",
-  Makeup: "bg-canvas text-gold-champagne border-bronze-warm/30",
+// Category icons and colors
+const categoryStyles: Record<string, { gradient: string; icon: string }> = {
+  Hair: { gradient: "from-amber-500/20 to-orange-600/20", icon: "✂️" },
+  Skin: { gradient: "from-rose-500/20 to-pink-600/20", icon: "✨" },
+  Nails: { gradient: "from-purple-500/20 to-violet-600/20", icon: "💅" },
+  Spa: { gradient: "from-teal-500/20 to-cyan-600/20", icon: "🧘" },
+  Bridal: { gradient: "from-pink-500/20 to-rose-600/20", icon: "👰" },
+  Makeup: { gradient: "from-fuchsia-500/20 to-purple-600/20", icon: "💄" },
 };
 
-const categoryEmojis: Record<string, string> = {
-  Hair: "scissors-icon",
-  Skin: "sparkles-icon",
-  Nails: "nail-icon",
-  Spa: "spa-icon",
-  Bridal: "bridal-icon",
-  Makeup: "makeup-icon",
-};
+export default function ServiceCard({ service }: ServiceCardProps) {
+  const categoryStyle = categoryStyles[service.category] || { gradient: "from-[#d4a574]/20 to-[#b8956a]/20", icon: "✨" };
 
-const categoryGradients: Record<string, string> = {
-  Hair: "from-surface-onyx to-canvas",
-  Skin: "from-surface-onyx to-canvas",
-  Nails: "from-surface-onyx to-canvas",
-  Spa: "from-surface-onyx to-canvas",
-  Bridal: "from-surface-onyx to-canvas",
-  Makeup: "from-surface-onyx to-canvas",
-};
-
-const categoryEmojiIcons: Record<string, string> = {
-  Hair: "✂️",
-  Skin: "✨",
-  Nails: "💅",
-  Spa: "🧖",
-  Bridal: "👰",
-  Makeup: "💄",
-};
-
-export default function ServiceCard({ service }: Props) {
-  const colorClass = categoryColors[service.category] || "bg-surface-onyx text-text-ivory border-outline/30";
-  const gradient = categoryGradients[service.category] || "from-surface-onyx to-canvas";
-  const emoji = categoryEmojiIcons[service.category] || "✂️";
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
 
   return (
-    <Card className="glass-card-luxury group overflow-hidden border border-bronze-warm/15 hover:border-gold-champagne/40 transition-all duration-300 py-0 gap-0">
-      {/* Image / Placeholder */}
-      <div className={`relative h-44 bg-linear-to-br ${gradient} overflow-hidden`}>
-        {service.image_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={service.image_url}
-            alt={service.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center">
-            <span className="text-5xl group-hover:scale-110 transition-transform duration-300">{emoji}</span>
-            <span className="mt-2.5 text-xs text-bronze-warm font-medium uppercase tracking-widest">{service.category}</span>
+    <Card className="service-card group relative bg-gradient-to-br from-[#1c1c1f] to-[#141416] border-[#d4a574]/10 overflow-hidden rounded-2xl">
+      {/* Top gradient bar */}
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${categoryStyle.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
+      
+      <CardContent className="p-0">
+        {/* Header with icon and category */}
+        <div className="p-5 pb-3">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${categoryStyle.gradient} flex items-center justify-center text-2xl border border-[#d4a574]/20 group-hover:scale-110 transition-transform duration-300`}>
+                {categoryStyle.icon}
+              </div>
+              <div>
+                <Badge 
+                  variant="secondary" 
+                  className="bg-[#d4a574]/10 text-[#d4a574] border border-[#d4a574]/30 text-[10px] uppercase tracking-wider font-semibold mb-1"
+                >
+                  {service.category}
+                </Badge>
+                <div className="flex items-center gap-1 text-[#9a958e] text-xs">
+                  <Clock className="w-3 h-3" />
+                  {service.duration_minutes} mins
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-
-        <div className="absolute top-3 left-3">
-          <Badge variant="secondary" className={`${colorClass} border text-[10px] font-semibold tracking-wider uppercase bg-surface-onyx/80 backdrop-blur-sm`}>
-            {service.category}
-          </Badge>
+          
+          {/* Service name */}
+          <h3 className="text-lg font-serif font-semibold text-[#faf9f7] mb-2 group-hover:text-[#d4a574] transition-colors duration-300">
+            {service.name}
+          </h3>
+          
+          {/* Description */}
+          <p className="text-sm text-[#9a958e] leading-relaxed line-clamp-2">
+            {service.description}
+          </p>
         </div>
-
-        <div className="absolute top-3 right-3">
-          <Badge variant="secondary" className="bg-surface-onyx/80 backdrop-blur-sm text-gold-champagne border border-gold-champagne/30 text-[10px] font-semibold gap-1">
-            <Star className="w-3 h-3 fill-gold-champagne text-gold-champagne" />
-            4.9
-          </Badge>
-        </div>
-      </div>
-
-      {/* Content */}
-      <CardContent className="p-5 flex flex-col flex-1 bg-surface-onyx text-text-ivory">
-        <h3 className="text-text-ivory font-serif font-bold text-lg leading-snug group-hover:text-gold-champagne transition-colors">
-          {service.name}
-        </h3>
-        <p className="text-on-surface-variant text-sm mt-1.5 flex-1 line-clamp-2 leading-relaxed font-sans">
-          {service.description}
-        </p>
-
-        <div className="mt-4 flex items-center justify-between">
-          <span className="flex items-center gap-1.5 text-sm text-bronze-warm font-sans">
-            <Clock className="w-3.5 h-3.5 text-bronze-warm" />
-            {service.duration_minutes} min
-          </span>
-          <span className="text-xl font-bold text-gold-champagne font-serif">
-            ₹{service.price.toLocaleString()}
-          </span>
-        </div>
-
-        <Button asChild className="btn-ghost-luxury mt-4 w-full rounded-full gap-2 py-5 font-sans uppercase tracking-widest text-xs font-bold" size="lg">
+        
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#d4a574]/20 to-transparent mx-5" />
+        
+        {/* Footer with price and CTA */}
+        <div className="p-5 pt-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs text-[#9a958e] mb-1">Starting from</p>
+            <p className="text-xl font-serif font-bold text-[#d4a574]">
+              {formatPrice(service.price)}
+            </p>
+          </div>
+          
           <Link href={`/book?service=${service.id}`}>
-            Book Now
-            <ChevronRight className="w-4 h-4 text-gold-champagne" />
+            <Button 
+              className="btn-primary-luxury rounded-xl px-5 py-2.5 h-auto text-xs font-semibold uppercase tracking-wider group/btn"
+            >
+              <span className="flex items-center gap-2">
+                Book Now
+                <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform duration-200" />
+              </span>
+            </Button>
           </Link>
-        </Button>
+        </div>
       </CardContent>
+      
+      {/* Hover glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#d4a574]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </Card>
   );
 }
