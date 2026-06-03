@@ -49,7 +49,7 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-[#faf9f7] font-serif">Luxe Salon</span>
+                <span className="text-xl font-bold text-text-ivory font-serif">Luxe Salon</span>
                 <span className="text-[10px] text-[#b8956a] uppercase tracking-[0.2em] font-medium">Premium Beauty</span>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function Footer() {
 
           {/* Quick Links - Takes 2 columns */}
           <div className="lg:col-span-2">
-            <h3 className="text-[#faf9f7] font-semibold mb-5 text-sm uppercase tracking-wider font-serif flex items-center gap-2">
+            <h3 className="text-text-ivory font-semibold mb-5 text-sm uppercase tracking-wider font-serif flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-[#d4a574]" />
               Quick Links
             </h3>
@@ -96,7 +96,7 @@ export default function Footer() {
 
           {/* Services - Takes 3 columns */}
           <div className="lg:col-span-3">
-            <h3 className="text-[#faf9f7] font-semibold mb-5 text-sm uppercase tracking-wider font-serif flex items-center gap-2">
+            <h3 className="text-text-ivory font-semibold mb-5 text-sm uppercase tracking-wider font-serif flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-[#d4a574]" />
               Our Services
             </h3>
@@ -117,7 +117,7 @@ export default function Footer() {
 
           {/* Contact - Takes 3 columns */}
           <div className="lg:col-span-3">
-            <h3 className="text-[#faf9f7] font-semibold mb-5 text-sm uppercase tracking-wider font-serif flex items-center gap-2">
+            <h3 className="text-text-ivory font-semibold mb-5 text-sm uppercase tracking-wider font-serif flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-[#d4a574]" />
               Contact Us
             </h3>
