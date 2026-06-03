@@ -35,11 +35,11 @@ export default function Navbar() {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/#services", label: "Services" },
-    { href: "/#about", label: "About" },
-    { href: "/#gallery", label: "Gallery" },
-    { href: "/#reviews", label: "Reviews" },
-    { href: "/#contact", label: "Contact" },
+    { href: "/services", label: "Services" },
+    { href: "/about", label: "About" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/reviews", label: "Reviews" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
@@ -102,7 +102,7 @@ export default function Navbar() {
               asChild 
               className="btn-primary-luxury rounded-full px-6 py-2.5 h-auto shadow-lg hover:shadow-[0_0_30px_rgba(212,165,116,0.4)] transition-all duration-300 text-xs font-bold uppercase tracking-wider"
             >
-              <Link href="/#services" className="flex items-center gap-2">
+              <Link href="/services" className="flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 Book Now
               </Link>
@@ -128,12 +128,12 @@ export default function Navbar() {
                   <Menu className="w-5 h-5" />
                 </button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 bg-[#0a0a0b] border-l border-[#d4a574]/20">
+              <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 bg-canvas border-l border-gold-champagne/20">
                 <SheetHeader className="p-6 pb-4">
                   <SheetTitle className="flex items-center gap-3">
                     <div className="relative">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#d4a574] to-[#b8956a] flex items-center justify-center shadow-lg">
-                        <Scissors className="w-5 h-5 text-[#0a0a0b]" />
+                        <Scissors className="w-5 h-5 text-[#faf9f7]" />
                       </div>
                     </div>
                     <div className="flex flex-col items-start">
@@ -179,7 +179,7 @@ export default function Navbar() {
                       className="btn-primary-luxury w-full rounded-xl h-12 text-xs font-bold uppercase tracking-widest" 
                       size="lg"
                     >
-                      <Link href="/#services">
+                      <Link href="/services">
                         <Sparkles className="w-4 h-4 mr-2" />
                         Book Appointment
                       </Link>
@@ -188,8 +188,8 @@ export default function Navbar() {
                 </div>
                 
                 {/* Mobile menu footer */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-[#d4a574]/10 bg-[#141416]">
-                  <p className="text-xs text-[#9a958e] text-center">
+                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gold-champagne/10 bg-surface-elevated">
+                  <p className="text-xs text-on-surface-variant text-center">
                     Premium Beauty Experience
                   </p>
                 </div>

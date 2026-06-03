@@ -43,17 +43,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
-      <body className={`${inter.className} antialiased bg-[#0a0a0b] text-[#faf9f7]`}>
+      <body className={`${inter.className} antialiased bg-canvas text-text-ivory`}>
         <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
             style: {
-              background: "#1c1c1f",
-              color: "#faf9f7",
+              background: "#ffffff",
+              color: "#1a1a1c",
               borderRadius: "12px",
-              border: "1px solid rgba(212, 165, 116, 0.2)",
-              boxShadow: "0 10px 40px -10px rgba(0,0,0,0.4), 0 0 20px rgba(212, 165, 116, 0.1)",
+              border: "1px solid rgba(184, 149, 106, 0.2)",
+              boxShadow: "0 10px 40px -10px rgba(184,149,106,0.1), 0 0 20px rgba(184,149,106,0.05)",
               fontSize: "14px",
               padding: "12px 16px",
             },

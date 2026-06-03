@@ -7,11 +7,11 @@ export default function Footer() {
   
   const quickLinks = [
     { href: "/", label: "Home" },
-    { href: "/#services", label: "Services" },
-    { href: "/#about", label: "About Us" },
-    { href: "/#gallery", label: "Gallery" },
-    { href: "/#reviews", label: "Reviews" },
-    { href: "/#contact", label: "Contact" },
+    { href: "/services", label: "Services" },
+    { href: "/about", label: "About Us" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/reviews", label: "Reviews" },
+    { href: "/contact", label: "Contact" },
   ];
 
   const services = [
@@ -30,11 +30,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative bg-[#0a0a0b] border-t border-[#d4a574]/10 overflow-hidden">
+    <footer className="relative bg-canvas border-t border-gold-champagne/10 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#d4a574]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#b8956a]/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold-champagne/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-bronze-warm/5 rounded-full blur-3xl" />
       </div>
 
       {/* Main Footer Content */}
@@ -65,7 +65,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-10 h-10 rounded-xl bg-[#141416] border border-[#d4a574]/20 flex items-center justify-center text-[#9a958e] social-icon"
+                  className="w-10 h-10 rounded-xl bg-surface-elevated border border-gold-champagne/20 flex items-center justify-center text-on-surface-variant social-icon"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -104,8 +104,8 @@ export default function Footer() {
               {services.map((s) => (
                 <li key={s}>
                   <Link
-                    href="/#services"
-                    className="text-sm text-[#9a958e] hover:text-[#d4a574] transition-colors duration-200 flex items-center gap-1 group"
+                    href="/services"
+                    className="text-sm text-on-surface-variant hover:text-gold-champagne transition-colors duration-200 flex items-center gap-1 group"
                   >
                     {s}
                     <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
@@ -123,34 +123,34 @@ export default function Footer() {
             </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 group">
-                <div className="w-9 h-9 rounded-lg bg-[#d4a574]/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#d4a574]/20 transition-colors">
-                  <MapPin className="w-4 h-4 text-[#d4a574]" />
+                <div className="w-9 h-9 rounded-lg bg-gold-champagne/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-gold-champagne/20 transition-colors">
+                  <MapPin className="w-4 h-4 text-gold-champagne" />
                 </div>
-                <span className="text-sm text-[#9a958e] leading-relaxed">
+                <span className="text-sm text-on-surface-variant leading-relaxed">
                   123 Beauty Street<br />Fashion District<br />Mumbai 400001
                 </span>
               </li>
               <li className="flex items-center gap-3 group">
-                <div className="w-9 h-9 rounded-lg bg-[#d4a574]/10 flex items-center justify-center shrink-0 group-hover:bg-[#d4a574]/20 transition-colors">
-                  <Phone className="w-4 h-4 text-[#d4a574]" />
+                <div className="w-9 h-9 rounded-lg bg-gold-champagne/10 flex items-center justify-center shrink-0 group-hover:bg-gold-champagne/20 transition-colors">
+                  <Phone className="w-4 h-4 text-gold-champagne" />
                 </div>
-                <a href="tel:+919876543210" className="text-sm text-[#9a958e] hover:text-[#d4a574] transition-colors">
+                <a href="tel:+919876543210" className="text-sm text-on-surface-variant hover:text-gold-champagne transition-colors">
                   +91 98765 43210
                 </a>
               </li>
               <li className="flex items-center gap-3 group">
-                <div className="w-9 h-9 rounded-lg bg-[#d4a574]/10 flex items-center justify-center shrink-0 group-hover:bg-[#d4a574]/20 transition-colors">
-                  <Mail className="w-4 h-4 text-[#d4a574]" />
+                <div className="w-9 h-9 rounded-lg bg-gold-champagne/10 flex items-center justify-center shrink-0 group-hover:bg-gold-champagne/20 transition-colors">
+                  <Mail className="w-4 h-4 text-gold-champagne" />
                 </div>
-                <a href="mailto:hello@luxesalon.com" className="text-sm text-[#9a958e] hover:text-[#d4a574] transition-colors">
+                <a href="mailto:hello@luxesalon.com" className="text-sm text-on-surface-variant hover:text-gold-champagne transition-colors">
                   hello@luxesalon.com
                 </a>
               </li>
               <li className="flex items-center gap-3 group">
-                <div className="w-9 h-9 rounded-lg bg-[#d4a574]/10 flex items-center justify-center shrink-0 group-hover:bg-[#d4a574]/20 transition-colors">
-                  <Clock className="w-4 h-4 text-[#d4a574]" />
+                <div className="w-9 h-9 rounded-lg bg-gold-champagne/10 flex items-center justify-center shrink-0 group-hover:bg-gold-champagne/20 transition-colors">
+                  <Clock className="w-4 h-4 text-gold-champagne" />
                 </div>
-                <span className="text-sm text-[#9a958e]">
+                <span className="text-sm text-on-surface-variant">
                   Mon-Sat: 9AM - 8PM<br />Sunday: 10AM - 6PM
                 </span>
               </li>
@@ -160,18 +160,18 @@ export default function Footer() {
       </div>
 
       {/* Newsletter Section */}
-      <div className="relative border-t border-[#d4a574]/10 bg-[#141416]/50">
+      <div className="relative border-t border-gold-champagne/10 bg-surface-elevated/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-center sm:text-left">
-              <h4 className="text-[#faf9f7] font-serif font-semibold mb-1">Stay Updated</h4>
-              <p className="text-sm text-[#9a958e]">Get the latest updates on our services and offers</p>
+              <h4 className="text-text-ivory font-serif font-semibold mb-1">Stay Updated</h4>
+              <p className="text-sm text-on-surface-variant">Get the latest updates on our services and offers</p>
             </div>
             <div className="flex gap-2">
               <input 
                 type="email" 
                 placeholder="Enter your email"
-                className="input-field px-4 py-2.5 rounded-xl text-sm w-48 sm:w-64 text-[#faf9f7] placeholder:text-[#9a958e]/60"
+                className="input-field px-4 py-2.5 rounded-xl text-sm w-48 sm:w-64 text-text-ivory placeholder:text-on-surface-variant/60"
               />
               <button className="btn-primary-luxury px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap">
                 Subscribe
@@ -185,11 +185,11 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#9a958e]/60">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-on-surface-variant/60">
           <p>&copy; {currentYear} Luxe Salon. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link href="#" className="hover:text-[#d4a574] transition-colors">Privacy Policy</Link>
-            <Link href="#" className="hover:text-[#d4a574] transition-colors">Terms of Service</Link>
+            <Link href="#" className="hover:text-gold-champagne transition-colors">Privacy Policy</Link>
+            <Link href="#" className="hover:text-gold-champagne transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
   };
 
   return (
-    <Card className="service-card group relative bg-gradient-to-br from-[#1c1c1f] to-[#141416] border-[#d4a574]/10 overflow-hidden rounded-2xl">
+    <Card className="service-card group relative bg-surface-onyx border-gold-champagne/10 overflow-hidden rounded-2xl">
       {/* Top gradient bar */}
       <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${categoryStyle.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
       
@@ -42,17 +42,17 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         <div className="p-5 pb-3">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${categoryStyle.gradient} flex items-center justify-center text-2xl border border-[#d4a574]/20 group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${categoryStyle.gradient} flex items-center justify-center text-2xl border border-gold-champagne/20 group-hover:scale-110 transition-transform duration-300`}>
                 {categoryStyle.icon}
               </div>
               <div>
                 <Badge 
                   variant="secondary" 
-                  className="bg-[#d4a574]/10 text-[#d4a574] border border-[#d4a574]/30 text-[10px] uppercase tracking-wider font-semibold mb-1"
+                  className="bg-gold-champagne/10 text-gold-champagne border border-gold-champagne/30 text-[10px] uppercase tracking-wider font-semibold mb-1"
                 >
                   {service.category}
                 </Badge>
-                <div className="flex items-center gap-1 text-[#9a958e] text-xs">
+                <div className="flex items-center gap-1 text-on-surface-variant text-xs">
                   <Clock className="w-3 h-3" />
                   {service.duration_minutes} mins
                 </div>
@@ -61,24 +61,24 @@ export default function ServiceCard({ service }: ServiceCardProps) {
           </div>
           
           {/* Service name */}
-          <h3 className="text-lg font-serif font-semibold text-[#faf9f7] mb-2 group-hover:text-[#d4a574] transition-colors duration-300">
+          <h3 className="text-lg font-serif font-semibold text-text-ivory mb-2 group-hover:text-gold-champagne transition-colors duration-300">
             {service.name}
           </h3>
           
           {/* Description */}
-          <p className="text-sm text-[#9a958e] leading-relaxed line-clamp-2">
+          <p className="text-sm text-on-surface-variant leading-relaxed line-clamp-2">
             {service.description}
           </p>
         </div>
         
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#d4a574]/20 to-transparent mx-5" />
+        <div className="h-px bg-gradient-to-r from-transparent via-gold-champagne/20 to-transparent mx-5" />
         
         {/* Footer with price and CTA */}
         <div className="p-5 pt-4 flex items-center justify-between">
           <div>
-            <p className="text-xs text-[#9a958e] mb-1">Starting from</p>
-            <p className="text-xl font-serif font-bold text-[#d4a574]">
+            <p className="text-xs text-on-surface-variant mb-1">Starting from</p>
+            <p className="text-xl font-serif font-bold text-gold-champagne">
               {formatPrice(service.price)}
             </p>
           </div>
@@ -97,7 +97,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       </CardContent>
       
       {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#d4a574]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-gold-champagne/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </Card>
   );
 }
