@@ -95,10 +95,10 @@ export default function Home() {
       <Navbar />
 
       {/* ─── Hero Section ───────────────────────────────────── */}
-      <section className="relative min-h-[100svh] flex items-center pt-16 sm:pt-[72px] overflow-hidden">
+      <section className="relative min-h-svh flex items-center pt-16 sm:pt-[72px] overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-canvas via-surface-elevated/30 to-canvas" />
+          <div className="absolute inset-0 bg-linear-to-br from-canvas via-surface-elevated/30 to-canvas" />
           
           {/* Gradient orbs */}
           <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-gold-champagne/5 rounded-full blur-[100px] animate-float" />
@@ -106,7 +106,7 @@ export default function Home() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-champagne/3 rounded-full blur-[120px] animate-pulse-subtle" />
           
           {/* Grid pattern overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(184,149,106,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(184,149,106,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(184,149,106,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(184,149,106,0.02)_1px,transparent_1px)] bg-size-[60px_60px]" />
         </div>
 
         {/* Content */}
@@ -186,7 +186,7 @@ export default function Home() {
                   className="stat-card p-5 rounded-2xl flex items-center gap-4 animate-fade-in-up bg-surface-onyx border border-gold-champagne/10"
                   style={{ animationDelay: `${(i + 2) * 100}ms` }}
                 >
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-champagne/20 to-bronze-warm/10 flex items-center justify-center shrink-0 border border-gold-champagne/20">
+                  <div className="w-14 h-14 rounded-xl bg-linear-to-br from-gold-champagne/20 to-bronze-warm/10 flex items-center justify-center shrink-0 border border-gold-champagne/20">
                     <Icon className="w-6 h-6 text-gold-champagne" />
                   </div>
                   <div className="text-left">
@@ -287,7 +287,7 @@ export default function Home() {
             <AnimatedSection delay={200} className="order-first lg:order-last">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
-                  <div className="gallery-item aspect-[3/4] rounded-2xl overflow-hidden border border-gold-champagne/20">
+                  <div className="gallery-item aspect-3/4 rounded-2xl overflow-hidden border border-gold-champagne/20">
                     <img 
                       src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=500&fit=crop" 
                       alt="Hair styling" 
@@ -333,7 +333,7 @@ export default function Home() {
               {GALLERY_PREVIEW.map((img, i) => (
                 <div 
                   key={i} 
-                  className="gallery-item group relative overflow-hidden rounded-2xl border border-gold-champagne/10 aspect-[3/4]"
+                  className="gallery-item group relative overflow-hidden rounded-2xl border border-gold-champagne/10 aspect-3/4"
                 >
                   <img 
                     src={img.src} 
@@ -405,7 +405,7 @@ export default function Home() {
                     </Badge>
                     <Separator className="bg-gold-champagne/10 mb-4" />
                     <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-gold-champagne/30 to-bronze-warm/20 flex items-center justify-center font-serif font-bold text-sm text-gold-champagne border border-gold-champagne/30">
+                      <div className="w-11 h-11 rounded-full bg-linear-to-br from-gold-champagne/30 to-bronze-warm/20 flex items-center justify-center font-serif font-bold text-sm text-gold-champagne border border-gold-champagne/30">
                         {name.split(" ").map(n => n[0]).join("")}
                       </div>
                       <div>
@@ -483,20 +483,20 @@ export default function Home() {
 
       {/* ─── CTA Banner Section ─────────────────────────────── */}
       <section className="py-20 sm:py-24 relative overflow-hidden bg-gold-champagne">
-        <div className="absolute inset-0 bg-gradient-to-r from-gold-champagne via-gold-light to-bronze-warm opacity-90" />
+        <div className="absolute inset-0 bg-linear-to-r from-gold-champagne via-gold-light to-bronze-warm opacity-90" />
         
         <div className="relative max-w-4xl mx-auto text-center px-4 sm:px-6">
           <AnimatedSection>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-[#faf9f6] mb-4 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-canvas mb-4 tracking-tight">
               Ready for Your Transformation?
             </h2>
-            <p className="text-[#faf9f6]/95 text-base sm:text-lg lg:text-xl mb-8 max-w-2xl mx-auto font-sans">
+            <p className="text-canvas/95 text-base sm:text-lg lg:text-xl mb-8 max-w-2xl mx-auto font-sans">
               Book your appointment today and experience the Luxe difference. Our experts are ready to bring out your best look.
             </p>
             <Button
               asChild
               size="lg"
-              className="rounded-full px-8 sm:px-10 py-4 sm:py-5 h-auto text-xs font-bold uppercase tracking-widest bg-[#1a1a1c] text-[#faf9f6] hover:bg-[#2e2e33] shadow-xl hover:shadow-2xl transition-all duration-300 group"
+              className="rounded-full px-8 sm:px-10 py-4 sm:py-5 h-auto text-xs font-bold uppercase tracking-widest bg-text-ivory text-canvas hover:bg-[#2e2e33] shadow-xl hover:shadow-2xl transition-all duration-300 group"
             >
               <Link href="/services">
                 Book Your Appointment

@@ -35,14 +35,14 @@ export default function ServiceCard({ service }: ServiceCardProps) {
   return (
     <Card className="service-card group relative bg-surface-onyx border-gold-champagne/10 overflow-hidden rounded-2xl">
       {/* Top gradient bar */}
-      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${categoryStyle.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${categoryStyle.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
       
       <CardContent className="p-0">
         {/* Header with icon and category */}
         <div className="p-5 pb-3">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${categoryStyle.gradient} flex items-center justify-center text-2xl border border-gold-champagne/20 group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${categoryStyle.gradient} flex items-center justify-center text-2xl border border-gold-champagne/20 group-hover:scale-110 transition-transform duration-300`}>
                 {categoryStyle.icon}
               </div>
               <div>
@@ -72,7 +72,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         </div>
         
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-gold-champagne/20 to-transparent mx-5" />
+        <div className="h-px bg-linear-to-r from-transparent via-gold-champagne/20 to-transparent mx-5" />
         
         {/* Footer with price and CTA */}
         <div className="p-5 pt-4 flex items-center justify-between">
@@ -97,7 +97,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       </CardContent>
       
       {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gold-champagne/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-br from-gold-champagne/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </Card>
   );
 }

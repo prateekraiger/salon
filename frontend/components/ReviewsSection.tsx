@@ -192,7 +192,7 @@ export function ReviewsSection({
         <Separator className="mb-4" />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10 bg-gradient-to-br from-primary/20 to-accent/20">
+            <Avatar className="h-10 w-10 bg-linear-to-br from-primary/20 to-accent/20">
               <AvatarFallback className="text-sm font-bold text-primary">
                 {review.name.split(" ").map((n) => n[0]).join("")}
               </AvatarFallback>
@@ -353,7 +353,7 @@ export function ReviewsSection({
           ].map((stat) => (
             <div
               key={stat.label}
-              className="text-center p-4 rounded-xl bg-gradient-to-br from-primary/5 to-accent/5 border border-border/30"
+              className="text-center p-4 rounded-xl bg-linear-to-br from-primary/5 to-accent/5 border border-border/30"
             >
               <stat.icon className="h-6 w-6 text-primary mx-auto mb-2" />
               <p className="text-2xl font-bold text-foreground">{stat.value}</p>

@@ -62,7 +62,7 @@ export default function FloatingCTA() {
             </a>
 
             {/* Divider */}
-            <div className="w-[1px] h-6 bg-gold-champagne/15" />
+            <div className="w-px h-6 bg-gold-champagne/15" />
 
             {/* Book Now Button */}
             <Link

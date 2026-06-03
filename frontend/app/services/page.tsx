@@ -34,7 +34,7 @@ export default function ServicesPage() {
     <div className="min-h-screen flex flex-col bg-canvas text-text-ivory font-sans antialiased overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
+      <main className="grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
         {/* Background decorations */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gold-champagne/5 rounded-full blur-[100px] animate-pulse-subtle" />
@@ -69,7 +69,7 @@ export default function ServicesPage() {
                 className={cn(
                   "category-btn px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-sans text-xs font-bold uppercase tracking-wider transition-all duration-300 border cursor-pointer",
                   activeCategory === cat
-                    ? "active bg-gradient-to-r from-gold-champagne to-bronze-warm text-[#faf9f7] border-transparent shadow-lg shadow-gold-champagne/20"
+                    ? "active bg-linear-to-r from-gold-champagne to-bronze-warm text-canvas border-transparent shadow-lg shadow-gold-champagne/20"
                     : "border-gold-champagne/30 text-on-surface-variant hover:text-gold-champagne hover:border-gold-champagne bg-surface-onyx/50"
                 )}
               >

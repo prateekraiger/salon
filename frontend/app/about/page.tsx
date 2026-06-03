@@ -11,7 +11,7 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col bg-canvas text-text-ivory font-sans antialiased overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
+      <main className="grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
         {/* Background decorations */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-gold-champagne/5 rounded-full blur-[100px] animate-pulse-subtle" />
@@ -75,7 +75,7 @@ export default function AboutPage() {
             <div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
-                  <div className="gallery-item aspect-[3/4] rounded-2xl overflow-hidden border border-gold-champagne/20">
+                  <div className="gallery-item aspect-3/4 rounded-2xl overflow-hidden border border-gold-champagne/20">
                     <img 
                       src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=500&fit=crop" 
                       alt="Hair styling" 
@@ -130,7 +130,7 @@ export default function AboutPage() {
                 { name: "Priya Nair", role: "Lead Bridal & Makeup Artist", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=400&fit=crop" }
               ].map((stylist) => (
                 <div key={stylist.name} className="glass-card-luxury p-0 rounded-2xl overflow-hidden border border-gold-champagne/10 group">
-                  <div className="aspect-[4/5] w-full overflow-hidden relative">
+                  <div className="aspect-4/5 w-full overflow-hidden relative">
                     <img 
                       src={stylist.img} 
                       alt={stylist.name} 

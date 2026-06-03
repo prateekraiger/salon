@@ -44,7 +44,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 mb-6">
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#d4a574] to-[#b8956a] flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 rounded-xl bg-linear-to-br from-[#d4a574] to-[#b8956a] flex items-center justify-center shadow-lg">
                   <Scissors className="w-6 h-6 text-[#0a0a0b]" />
                 </div>
               </div>

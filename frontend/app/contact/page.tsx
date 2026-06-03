@@ -12,7 +12,7 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col bg-canvas text-text-ivory font-sans antialiased overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
+      <main className="grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
         {/* Background decorations */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gold-champagne/5 rounded-full blur-[100px] animate-pulse-subtle" />
@@ -59,8 +59,8 @@ export default function ContactPage() {
 
           {/* Interactive Map Section */}
           <div className="animate-fade-in-up stagger-2 max-w-5xl mx-auto">
-            <div className="glass-card-luxury rounded-2xl overflow-hidden border border-gold-champagne/10 aspect-[21/9] relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-surface-elevated to-surface-onyx flex items-center justify-center">
+            <div className="glass-card-luxury rounded-2xl overflow-hidden border border-gold-champagne/10 aspect-21/9 relative group">
+              <div className="absolute inset-0 bg-linear-to-br from-surface-elevated to-surface-onyx flex items-center justify-center">
                 <div className="text-center p-4">
                   <MapPin className="w-12 h-12 text-gold-champagne mx-auto mb-4" />
                   <p className="text-text-ivory font-semibold mb-1">123 Beauty Street, Mumbai</p>

@@ -21,7 +21,7 @@ export default function GalleryPage() {
     <div className="min-h-screen flex flex-col bg-canvas text-text-ivory font-sans antialiased overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
+      <main className="grow pt-24 pb-16 sm:pt-28 sm:pb-20 relative">
         {/* Background decorations */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gold-champagne/5 rounded-full blur-[100px] animate-pulse-subtle" />
@@ -54,7 +54,7 @@ export default function GalleryPage() {
                 <div 
                   key={i} 
                   className={cn(
-                    "gallery-item group relative overflow-hidden rounded-2xl border border-gold-champagne/10 cursor-pointer aspect-[3/4]"
+                    "gallery-item group relative overflow-hidden rounded-2xl border border-gold-champagne/10 cursor-pointer aspect-3/4"
                   )}
                 >
                   <img 
@@ -63,9 +63,9 @@ export default function GalleryPage() {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   {/* Subtle hover overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-canvas/90 via-canvas/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                  <div className="absolute inset-0 bg-linear-to-t from-canvas/90 via-canvas/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
                     <div className="space-y-1">
-                      <Badge className="bg-gold-champagne text-[#faf9f7] hover:bg-gold-champagne text-[9px] uppercase tracking-wider font-semibold">
+                      <Badge className="bg-gold-champagne text-canvas hover:bg-gold-champagne text-[9px] uppercase tracking-wider font-semibold">
                         {img.alt}
                       </Badge>
                       <h3 className="text-text-ivory font-serif font-bold text-lg mt-1 flex items-center gap-1.5">

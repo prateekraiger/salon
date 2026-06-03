@@ -561,7 +561,7 @@ function BookingForm() {
 
                 {/* Booking Summary */}
                 <Card className="glass-card-luxury bg-gold-champagne/5 border-gold-champagne/20 py-0 gap-0 overflow-hidden">
-                  <div className="h-px bg-gradient-to-r from-transparent via-gold-champagne/30 to-transparent" />
+                  <div className="h-px bg-linear-to-r from-transparent via-gold-champagne/30 to-transparent" />
                   <CardContent className="p-5 space-y-3">
                     <h3 className="font-serif font-bold text-text-ivory mb-4 text-sm flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-gold-champagne" />
@@ -580,7 +580,7 @@ function BookingForm() {
                         <span className="font-medium text-text-ivory text-right">{value}</span>
                       </div>
                     ))}
-                    <div className="h-px bg-gradient-to-r from-transparent via-gold-champagne/30 to-transparent my-3" />
+                    <div className="h-px bg-linear-to-r from-transparent via-gold-champagne/30 to-transparent my-3" />
                     <div className="flex items-center justify-between pt-1">
                       <span className="font-serif font-bold text-text-ivory">Total Amount</span>
                       <span className="text-2xl font-serif font-bold text-gold-champagne">₹{service?.price?.toLocaleString()}</span>

@@ -55,14 +55,14 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
             <div className="relative">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-[#d4a574] to-[#b8956a] flex items-center justify-center shadow-lg group-hover:shadow-[0_0_30px_rgba(212,165,116,0.4)] transition-all duration-500">
-                <Scissors className="w-5 h-5 sm:w-5 sm:h-5 text-[#0a0a0b]" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-linear-to-br from-[#d4a574] to-[#b8956a] flex items-center justify-center shadow-lg group-hover:shadow-[0_0_30px_rgba(212,165,116,0.4)] transition-all duration-500">
+                <Scissors className="w-5 h-5 sm:w-5 sm:h-5 text-canvas" />
               </div>
               {/* Decorative ring */}
               <div className="absolute -inset-1 rounded-xl border border-[#d4a574]/20 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div className="flex flex-col">
-              <span className="text-lg sm:text-xl font-bold text-[#faf9f7] tracking-tight font-serif">
+              <span className="text-lg sm:text-xl font-bold text-text-ivory tracking-tight font-serif">
                 Luxe Salon
               </span>
               <span className="text-[9px] sm:text-[10px] text-[#b8956a] uppercase tracking-[0.25em] font-medium -mt-0.5 hidden sm:block">
@@ -122,7 +122,7 @@ export default function Navbar() {
             <Sheet>
               <SheetTrigger asChild>
                 <button
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-[#faf9f7] hover:bg-[#d4a574]/10 transition-colors border border-[#d4a574]/20"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-text-ivory hover:bg-[#d4a574]/10 transition-colors border border-[#d4a574]/20"
                   aria-label="Open menu"
                 >
                   <Menu className="w-5 h-5" />
@@ -132,12 +132,12 @@ export default function Navbar() {
                 <SheetHeader className="p-6 pb-4">
                   <SheetTitle className="flex items-center gap-3">
                     <div className="relative">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#d4a574] to-[#b8956a] flex items-center justify-center shadow-lg">
-                        <Scissors className="w-5 h-5 text-[#faf9f7]" />
+                      <div className="w-10 h-10 rounded-xl bg-linear-to-br from-[#d4a574] to-[#b8956a] flex items-center justify-center shadow-lg">
+                        <Scissors className="w-5 h-5 text-canvas" />
                       </div>
                     </div>
                     <div className="flex flex-col items-start">
-                      <span className="font-bold text-[#faf9f7] font-serif text-lg">Luxe Salon</span>
+                      <span className="font-bold text-text-ivory font-serif text-lg">Luxe Salon</span>
                       <span className="text-[9px] text-[#b8956a] uppercase tracking-[0.2em] font-medium">Premium Beauty</span>
                     </div>
                   </SheetTitle>
@@ -148,7 +148,7 @@ export default function Navbar() {
                     <SheetClose key={l.href} asChild>
                       <Link
                         href={l.href}
-                        className="flex items-center justify-between px-4 py-3.5 text-sm font-medium text-[#faf9f7] hover:bg-[#d4a574]/10 hover:text-[#d4a574] rounded-xl transition-all duration-200 group"
+                        className="flex items-center justify-between px-4 py-3.5 text-sm font-medium text-text-ivory hover:bg-[#d4a574]/10 hover:text-[#d4a574] rounded-xl transition-all duration-200 group"
                       >
                         {l.label}
                         <ChevronRight className="w-4 h-4 text-[#9a958e] group-hover:text-[#d4a574] transition-colors" />

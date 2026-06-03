@@ -178,7 +178,7 @@ function ConfirmationContent() {
             "w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center mx-auto mb-5 border-2",
             isPaymentFailed
               ? "bg-[#991b1b]/10 border-red-400/30"
-              : "bg-gradient-to-br from-gold-champagne/20 to-bronze-warm/10 border-gold-champagne/30"
+              : "bg-linear-to-br from-gold-champagne/20 to-bronze-warm/10 border-gold-champagne/30"
           )}>
             {isPaymentFailed ? (
               <AlertTriangle className="w-10 sm:w-14 h-10 sm:h-14 text-red-400" />
@@ -215,7 +215,7 @@ function ConfirmationContent() {
         {/* Retry Payment Card */}
         {isPaymentFailed && (
           <Card className="glass-card-luxury mb-6 border-red-400/20 bg-red-400/5 animate-fade-in-up py-0 gap-0 overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-red-400/50 to-transparent" />
+            <div className="h-1 bg-linear-to-r from-red-400/50 to-transparent" />
             <CardContent className="p-5">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-red-400/10 flex items-center justify-center shrink-0">
@@ -251,17 +251,17 @@ function ConfirmationContent() {
             "p-5 sm:p-6 relative overflow-hidden",
             isPaymentFailed
               ? "bg-surface-elevated"
-              : "bg-gradient-to-r from-gold-champagne to-bronze-warm"
+              : "bg-linear-to-r from-gold-champagne to-bronze-warm"
           )}>
             <div className="relative flex items-center justify-between flex-wrap gap-3">
               <div>
                 <p className={cn(
                   "text-xs font-medium uppercase tracking-wider",
-                  isPaymentFailed ? "text-on-surface-variant" : "text-[#faf9f6]/80"
+                  isPaymentFailed ? "text-on-surface-variant" : "text-canvas/80"
                 )}>Booking Number</p>
                 <p className={cn(
                   "text-xl sm:text-2xl font-serif font-bold tracking-widest mt-0.5",
-                  isPaymentFailed ? "text-gold-champagne" : "text-[#faf9f6]"
+                  isPaymentFailed ? "text-gold-champagne" : "text-canvas"
                 )}>{booking.booking_number}</p>
               </div>
               <Badge 
@@ -270,7 +270,7 @@ function ConfirmationContent() {
                   "gap-1.5 backdrop-blur-sm text-[10px] uppercase tracking-wider",
                   isPaymentFailed
                     ? "bg-gold-champagne/10 text-gold-champagne border border-gold-champagne/30"
-                    : "bg-black/10 text-[#faf9f6] border border-[#faf9f6]/20"
+                    : "bg-black/10 text-canvas border border-canvas/20"
                 )}
               >
                 {booking.payment_method === "online" ? (
@@ -294,11 +294,11 @@ function ConfirmationContent() {
                 className="sm:col-span-2" />
             </div>
 
-            <div className="h-px bg-gradient-to-r from-transparent via-gold-champagne/20 to-transparent" />
+            <div className="h-px bg-linear-to-r from-transparent via-gold-champagne/20 to-transparent" />
 
             {/* Amount */}
             <Card className="glass-card bg-gold-champagne/5 border-gold-champagne/15 py-0 gap-0 overflow-hidden">
-              <div className="h-1 bg-gradient-to-r from-gold-champagne/50 to-transparent" />
+              <div className="h-1 bg-linear-to-r from-gold-champagne/50 to-transparent" />
               <CardContent className="p-4 flex items-center justify-between">
                 <span className="font-serif font-bold text-text-ivory">Total Amount</span>
                 <span className="text-xl sm:text-2xl font-serif font-bold text-gold-champagne">
@@ -362,7 +362,7 @@ function ConfirmationContent() {
             )}
           </div>
 
-          <div className="h-px bg-gradient-to-r from-transparent via-gold-champagne/10 to-transparent" />
+          <div className="h-px bg-linear-to-r from-transparent via-gold-champagne/10 to-transparent" />
 
           {/* Footer actions */}
           <div className="p-5 sm:p-6 flex flex-col sm:flex-row gap-3">
