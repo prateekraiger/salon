@@ -335,7 +335,7 @@ export default function AdminStaff() {
                   <div className="flex items-center gap-3">
                     <Avatar className="w-14 h-14 border-2 border-background shadow-md">
                       <AvatarImage src={s.image_url} alt={s.name} />
-                      <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-lg font-bold">
+                      <AvatarFallback className="bg-linear-to-br from-primary to-accent text-white text-lg font-bold">
                         {s.name
                           .split(" ")
                           .map((n) => n[0])

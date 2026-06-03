@@ -89,7 +89,7 @@ export default function AdminDashboard() {
             <Card key={label} className="border-border/30 py-4 sm:py-5 gap-0">
               <CardContent className="p-3 sm:p-4 pt-0">
                 <div className="flex items-start justify-between mb-2 sm:mb-3">
-                  <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br flex items-center justify-center shadow", color)}>
+                  <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-linear-to-br flex items-center justify-center shadow", color)}>
                     <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
                   <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
                     <span className="text-[10px] sm:text-xs font-bold text-primary">{count}</span>
                     <div className="w-full rounded-t-lg bg-primary/10 flex items-end" style={{ height: '100%' }}>
                       <div
-                        className="w-full rounded-t-lg bg-gradient-to-t from-primary to-accent chart-bar"
+                        className="w-full rounded-t-lg bg-linear-to-t from-primary to-accent chart-bar"
                         style={{ height: `${Math.max(pct, 4)}%`, minHeight: 4 }}
                       />
                     </div>
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
             {/* Desktop Table */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-secondary/50 border-b border-border/30">
+                <thead className="bg-gray-50 border-b border-gray-100">
                   <tr>
                     {["Booking #", "Customer", "Service", "Date & Time", "Payment", "Status", "Action"].map((h) => (
                       <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">{h}</th>
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-border/30">
                   {recentBookings.map((booking) => (
-                    <tr key={booking.id} className="hover:bg-secondary/30 transition-colors">
+                    <tr key={booking.id} className="hover:bg-surface-elevated transition-colors">
                       <td className="px-4 py-3.5 font-mono font-semibold text-primary whitespace-nowrap text-xs">
                         {booking.booking_number}
                       </td>

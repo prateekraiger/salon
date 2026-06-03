@@ -12,7 +12,7 @@ import { adminLogin, isAdminAuthenticated, adminLogout } from "@/lib/api";
 import toast from "react-hot-toast";
 import {
   LayoutDashboard, Scissors, CalendarDays, Menu,
-  LogOut, ChevronRight, BarChart2, Settings, ExternalLink, Loader2, Users
+  LogOut, ChevronRight, BarChart2, Settings, ExternalLink, Loader2, Users, Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -40,7 +40,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setAuthed(true);
       toast.success("Welcome to the admin panel!");
     } catch {
-      // Fallback: just store the key directly for backwards compatibility
       localStorage.setItem("admin_key", key);
       setAuthed(true);
     } finally {
@@ -57,42 +56,50 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // ─── Login Screen ──────────────────────────────────────────────
   if (!authed) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-sidebar-background via-gray-900 to-sidebar-background flex items-center justify-center p-4">
-        <Card className="w-full max-w-sm shadow-2xl border-0 bg-card">
-          <CardContent className="p-6 sm:p-8">
-            <div className="text-center mb-7">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-4 shadow-lg animate-pulse-glow">
-                <Scissors className="w-8 h-8 text-white" />
+      <div className="min-h-screen bg-canvas flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Decorative background orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gold-champagne/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-bronze-warm/5 rounded-full blur-[100px] pointer-events-none" />
+
+        <Card className="w-full max-w-sm shadow-xl border border-gold-champagne/15 bg-surface-onyx animate-fade-in-scale">
+          <CardContent className="p-7 sm:p-9">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-gold-champagne to-bronze-warm flex items-center justify-center mx-auto mb-5 shadow-lg shadow-gold-champagne/20 animate-pulse-glow">
+                <Scissors className="w-8 h-8 text-canvas" />
               </div>
-              <h1 className="text-2xl font-extrabold text-foreground">Admin Login</h1>
-              <p className="text-muted-foreground text-sm mt-1">Luxe Salon Dashboard</p>
+              <h1 className="text-2xl font-bold text-text-ivory font-serif tracking-tight">Admin Login</h1>
+              <p className="text-on-surface-variant text-sm mt-1.5 font-sans">Luxe Salon · Dashboard Access</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="admin-key">Admin Secret Key</Label>
+                <Label htmlFor="admin-key" className="text-text-ivory font-medium text-sm">Admin Secret Key</Label>
                 <Input
                   id="admin-key"
                   type="password"
                   value={key}
                   onChange={(e) => setKey(e.target.value)}
                   placeholder="Enter your admin key"
-                  className="h-11 rounded-xl"
+                  className="h-11 rounded-xl border-gold-champagne/20 bg-canvas focus:border-gold-champagne focus:ring-1 focus:ring-gold-champagne/20 text-text-ivory placeholder:text-on-surface-variant"
                 />
-                {error && <p className="text-destructive text-xs">{error}</p>}
+                {error && <p className="text-red-500 text-xs">{error}</p>}
               </div>
-              <Button type="submit" className="w-full h-11 rounded-xl text-base" disabled={loginLoading}>
-                {loginLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              <Button
+                type="submit"
+                disabled={loginLoading}
+                className="btn-primary-luxury w-full h-11 rounded-xl text-sm font-semibold uppercase tracking-wider"
+              >
+                {loginLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Sparkles className="w-4 h-4 mr-2" />}
                 Login to Dashboard
               </Button>
             </form>
 
-            <div className="mt-5 p-3 bg-primary/5 rounded-xl text-xs text-muted-foreground text-center border border-primary/10">
-              The admin key is set in your backend <code className="font-mono text-primary">.env</code> file as <code className="font-mono text-primary">ADMIN_SECRET_KEY</code>
+            <div className="mt-5 p-3 bg-gold-champagne/5 rounded-xl text-xs text-on-surface-variant text-center border border-gold-champagne/15">
+              Set <code className="font-mono text-gold-champagne">ADMIN_SECRET_KEY</code> in your backend <code className="font-mono text-gold-champagne">.env</code> file
             </div>
 
-            <Link href="/" className="mt-4 block text-center text-sm text-muted-foreground hover:text-primary transition-colors">
-              &larr; Back to website
+            <Link href="/" className="mt-5 block text-center text-sm text-on-surface-variant hover:text-gold-champagne transition-colors duration-200 font-sans">
+              ← Back to website
             </Link>
           </CardContent>
         </Card>
@@ -110,7 +117,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   const SidebarNav = ({ onNavigate }: { onNavigate?: () => void }) => (
-    <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+    <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
       {navItems.map(({ href, icon: Icon, label }) => {
         const active = pathname === href;
         return (
@@ -119,15 +126,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             href={href}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
+              "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
               active
-                ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-md"
-                : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                ? "bg-gold-champagne/15 text-gold-champagne border border-gold-champagne/20 shadow-sm"
+                : "text-on-surface-variant hover:bg-surface-elevated hover:text-text-ivory"
             )}
           >
-            <Icon className="w-[18px] h-[18px] shrink-0" />
+            <Icon className={cn("w-[18px] h-[18px] shrink-0", active ? "text-gold-champagne" : "")} />
             {label}
-            {active && <ChevronRight className="w-3.5 h-3.5 ml-auto" />}
+            {active && <ChevronRight className="w-3.5 h-3.5 ml-auto text-gold-champagne" />}
           </Link>
         );
       })}
@@ -135,29 +142,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 
   return (
-    <div className="min-h-screen bg-secondary/20 flex">
+    <div className="min-h-screen bg-canvas flex">
       {/* ─── Desktop Sidebar ────────────────────────────────── */}
-      <aside className="hidden lg:flex fixed top-0 left-0 h-full w-60 bg-sidebar-background text-sidebar-foreground z-40 flex-col border-r border-sidebar-border">
-        <div className="p-5 border-b border-sidebar-border">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow">
-              <Scissors className="w-4 h-4 text-white" />
+      <aside className="hidden lg:flex fixed top-0 left-0 h-full w-60 bg-surface-onyx text-text-ivory z-40 flex-col border-r border-gold-champagne/10 shadow-sm">
+        {/* Logo */}
+        <div className="p-5 border-b border-gold-champagne/10">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-linear-to-br from-gold-champagne to-bronze-warm flex items-center justify-center shadow-md shadow-gold-champagne/20 shrink-0">
+              <Scissors className="w-4 h-4 text-canvas" />
             </div>
             <div>
-              <p className="font-bold text-sidebar-foreground text-sm">Luxe Salon</p>
-              <p className="text-sidebar-foreground/40 text-[11px]">Admin Panel</p>
+              <p className="font-bold text-text-ivory text-sm font-serif">Luxe Salon</p>
+              <p className="text-on-surface-variant text-[11px] font-sans">Admin Panel</p>
             </div>
           </div>
         </div>
 
         <SidebarNav />
 
-        <div className="p-3 border-t border-sidebar-border">
+        {/* Footer */}
+        <div className="p-3 border-t border-gold-champagne/10">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sidebar-foreground/50 hover:bg-red-500/10 hover:text-red-400 text-sm font-medium transition-all"
+            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-red-50 hover:text-red-500 text-sm font-medium transition-all duration-200 group"
           >
-            <LogOut className="w-[18px] h-[18px]" />
+            <LogOut className="w-[18px] h-[18px] group-hover:text-red-500" />
             Logout
           </button>
         </div>
@@ -166,28 +175,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* ─── Main Content ─────────────────────────────────────── */}
       <div className="flex-1 lg:ml-60 flex flex-col min-h-screen">
         {/* Top bar */}
-        <header className="bg-background/95 backdrop-blur-xl border-b border-border/50 h-14 flex items-center px-3 sm:px-4 gap-3 sticky top-0 z-20">
+        <header className="bg-surface-onyx/90 backdrop-blur-xl border-b border-gold-champagne/10 h-14 flex items-center px-3 sm:px-5 gap-3 sticky top-0 z-20 shadow-sm">
           {/* Mobile Menu */}
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden h-9 w-9">
+              <Button variant="ghost" size="icon" className="lg:hidden h-9 w-9 text-text-ivory hover:bg-gold-champagne/10">
                 <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[260px] p-0 bg-sidebar-background text-sidebar-foreground border-sidebar-border">
-              <SheetHeader className="p-5 border-b border-sidebar-border">
-                <SheetTitle className="flex items-center gap-2.5 text-sidebar-foreground">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                    <Scissors className="w-4 h-4 text-white" />
+            <SheetContent side="left" className="w-[260px] p-0 bg-surface-onyx border-r border-gold-champagne/10">
+              <SheetHeader className="p-5 border-b border-gold-champagne/10">
+                <SheetTitle className="flex items-center gap-3 text-text-ivory">
+                  <div className="w-9 h-9 rounded-xl bg-linear-to-br from-gold-champagne to-bronze-warm flex items-center justify-center shadow-md">
+                    <Scissors className="w-4 h-4 text-canvas" />
                   </div>
-                  <span className="font-bold text-sm">Luxe Salon</span>
+                  <span className="font-bold font-serif text-sm">Luxe Salon</span>
                 </SheetTitle>
               </SheetHeader>
               <SidebarNav onNavigate={() => setSheetOpen(false)} />
-              <div className="p-3 border-t border-sidebar-border">
+              <div className="p-3 border-t border-gold-champagne/10">
                 <button
                   onClick={() => { handleLogout(); setSheetOpen(false); }}
-                  className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sidebar-foreground/50 hover:bg-red-500/10 hover:text-red-400 text-sm font-medium transition-all"
+                  className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-red-50 hover:text-red-500 text-sm font-medium transition-all duration-200"
                 >
                   <LogOut className="w-[18px] h-[18px]" />
                   Logout
@@ -197,11 +206,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Sheet>
 
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-foreground truncate">
+            <p className="text-sm font-semibold text-text-ivory truncate">
               {navItems.find((n) => n.href === pathname)?.label || "Admin"}
             </p>
           </div>
-          <Button variant="ghost" size="sm" asChild className="text-xs text-muted-foreground gap-1.5 shrink-0">
+
+          <Button variant="ghost" size="sm" asChild className="text-xs text-on-surface-variant gap-1.5 shrink-0 hover:text-gold-champagne hover:bg-gold-champagne/5">
             <Link href="/">
               <span className="hidden sm:inline">View Website</span>
               <ExternalLink className="w-3 h-3" />
@@ -209,7 +219,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Button>
         </header>
 
-        <main className="flex-1 p-3 sm:p-4 md:p-6">{children}</main>
+        <main className="flex-1 p-3 sm:p-4 md:p-6 bg-canvas">{children}</main>
       </div>
     </div>
   );

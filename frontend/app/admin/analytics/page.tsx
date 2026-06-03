@@ -98,7 +98,7 @@ export default function AdminAnalytics() {
         ].map(({ label, value, icon: Icon, color }) => (
           <Card key={label} className="border-border/30 py-4 sm:py-5 gap-0">
             <CardContent className="p-3 sm:p-4 pt-0">
-              <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br flex items-center justify-center mb-2 sm:mb-3 shadow", color)}>
+              <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-linear-to-br flex items-center justify-center mb-2 sm:mb-3 shadow", color)}>
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <p className="text-lg sm:text-xl md:text-2xl font-extrabold text-foreground truncate">{value}</p>
@@ -124,7 +124,7 @@ export default function AdminAnalytics() {
                     <div key={month} className="flex-1 flex flex-col items-center gap-1">
                       <span className="text-[10px] sm:text-xs font-bold text-primary">{count}</span>
                       <div className="w-full rounded-t-lg bg-primary/10" style={{ height: "100%" }}>
-                        <div className="w-full rounded-t-lg bg-gradient-to-t from-primary to-accent chart-bar"
+                        <div className="w-full rounded-t-lg bg-linear-to-t from-primary to-accent chart-bar"
                           style={{ height: `${Math.max(pct, 4)}%`, minHeight: 4 }} />
                       </div>
                       <span className="text-[8px] sm:text-[10px] text-muted-foreground text-center leading-tight truncate w-full">
