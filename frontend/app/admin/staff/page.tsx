@@ -111,8 +111,6 @@ export default function AdminStaff() {
       setStaff(res.data.data || []);
     } catch {
       toast.error("Failed to load staff members");
-      // Demo data fallback
-      setStaff(DEMO_STAFF);
     } finally {
       setLoading(false);
     }
@@ -667,62 +665,4 @@ export default function AdminStaff() {
   );
 }
 
-// Demo data for fallback
-const DEMO_STAFF: Staff[] = [
-  {
-    id: "1",
-    name: "Priya Sharma",
-    email: "priya@luxesalon.com",
-    phone: "+91 98765 43210",
-    designation: "Senior Stylist",
-    specialties: ["Hair Cutting", "Hair Coloring", "Bridal Makeup"],
-    experience_years: 8,
-    bio: "Expert in bridal transformations with 8+ years of experience in premium salons.",
-    image_url: "",
-    is_active: true,
-    rating: 4.9,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    name: "Ananya Kapoor",
-    email: "ananya@luxesalon.com",
-    phone: "+91 98765 43211",
-    designation: "Makeup Artist",
-    specialties: ["Bridal Makeup", "Facial & Skincare"],
-    experience_years: 6,
-    bio: "Award-winning makeup artist specializing in natural and glamorous looks.",
-    image_url: "",
-    is_active: true,
-    rating: 4.8,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    name: "Meera Reddy",
-    email: "meera@luxesalon.com",
-    phone: "+91 98765 43212",
-    designation: "Spa Therapist",
-    specialties: ["Massage Therapy", "Facial & Skincare"],
-    experience_years: 5,
-    bio: "Certified spa therapist with expertise in relaxation and therapeutic massages.",
-    image_url: "",
-    is_active: true,
-    rating: 4.7,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: "4",
-    name: "Riya Patel",
-    email: "riya@luxesalon.com",
-    phone: "+91 98765 43213",
-    designation: "Nail Technician",
-    specialties: ["Nail Art", "Manicure & Pedicure"],
-    experience_years: 4,
-    bio: "Creative nail artist known for intricate designs and attention to detail.",
-    image_url: "",
-    is_active: true,
-    rating: 4.8,
-    created_at: new Date().toISOString(),
-  },
-];
+

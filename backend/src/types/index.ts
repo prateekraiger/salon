@@ -167,6 +167,131 @@ export interface WhatsAppNotificationData {
   service: Service;
 }
 
+// ─── Staff Types ───────────────────────────────────────────────────────────────
+
+export interface Staff {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  designation: string;
+  specialties: string[];
+  experience_years: number;
+  rating: number;
+  image_url?: string;
+  bio?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StaffFormData {
+  name: string;
+  email?: string;
+  phone?: string;
+  designation: string;
+  specialties: string[];
+  experience_years: number;
+  rating: number;
+  image_url?: string;
+  bio?: string;
+  is_active?: boolean;
+}
+
+// ─── Settings Types ────────────────────────────────────────────────────────────
+
+export interface BusinessHours {
+  day: string;
+  day_index: number;
+  is_open: boolean;
+  open_time: string;
+  close_time: string;
+  slot_duration_minutes: number;
+}
+
+export interface Holiday {
+  date: string;
+  name: string;
+}
+
+export interface ShopSettings {
+  id: string;
+  salon_name: string;
+  salon_tagline?: string;
+  phone: string;
+  email?: string;
+  address: string;
+  city?: string;
+  pincode?: string;
+  website?: string;
+  facebook_url?: string;
+  instagram_url?: string;
+  whatsapp_number?: string;
+  timezone: string;
+  currency: string;
+  advance_booking_days: number;
+  max_bookings_per_slot: number;
+  allow_cod: boolean;
+  slot_duration_minutes: number;
+  business_hours: BusinessHours[];
+  holidays: Holiday[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SettingsFormData {
+  salon_name?: string;
+  salon_tagline?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  pincode?: string;
+  website?: string;
+  facebook_url?: string;
+  instagram_url?: string;
+  whatsapp_number?: string;
+  timezone?: string;
+  currency?: string;
+  advance_booking_days?: number;
+  max_bookings_per_slot?: number;
+  allow_cod?: boolean;
+  slot_duration_minutes?: number;
+}
+
+// ─── Review Types ──────────────────────────────────────────────────────────────
+
+export interface Review {
+  id: string;
+  booking_id?: string;
+  service_id?: string;
+  staff_id?: string;
+  customer_name: string;
+  rating: number;
+  comment?: string;
+  is_approved: boolean;
+  service?: Service;
+  staff?: Staff;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReviewFormData {
+  booking_id?: string;
+  service_id?: string;
+  staff_id?: string;
+  customer_name: string;
+  rating: number;
+  comment?: string;
+}
+
+export interface ReviewStats {
+  total_reviews: number;
+  average_rating: number;
+  rating_distribution: { rating: number; count: number }[];
+  recent_reviews: Review[];
+}
+
 // ─── Environment Types ─────────────────────────────────────────────────────────
 
 export interface EnvConfig {

@@ -21,10 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Star, Quote, ChevronLeft, ChevronRight, MessageSquare, ThumbsUp, User } from "lucide-react";
+import { Star, Quote, ChevronLeft, ChevronRight, MessageSquare, ThumbsUp, User, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getReviews } from "@/lib/api";
+import type { Review as ApiReview } from "@/lib/api";
 
-export interface Review {
+export interface ReviewDisplay {
   id: string;
   name: string;
   text: string;
@@ -37,14 +39,14 @@ export interface Review {
 }
 
 interface ReviewsSectionProps {
-  reviews?: Review[];
+  reviews?: ReviewDisplay[];
   className?: string;
   showHeader?: boolean;
   layout?: "grid" | "carousel" | "masonry";
   maxDisplay?: number;
 }
 
-const DEFAULT_REVIEWS: Review[] = [
+const DEFAULT_REVIEWS: ReviewDisplay[] = [
   {
     id: "1",
     name: "Priya Sharma",
@@ -107,31 +109,54 @@ const DEFAULT_REVIEWS: Review[] = [
   },
 ];
 
-const SERVICE_CATEGORIES = [
-  "All Services",
-  "Hair Styling",
-  "Hair Coloring",
-  "Men's Grooming",
-  "Bridal Makeup",
-  "Facial & Skincare",
-  "Nail Art",
-  "Spa Services",
-];
-
 export function ReviewsSection({
-  reviews = DEFAULT_REVIEWS,
+  reviews: propReviews,
   className,
   showHeader = true,
   layout = "grid",
   maxDisplay = 6,
 }: ReviewsSectionProps) {
-  const [filteredReviews, setFilteredReviews] = useState(reviews);
+  const [reviews, setReviews] = useState<ReviewDisplay[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filteredReviews, setFilteredReviews] = useState<ReviewDisplay[]>([]);
   const [selectedService, setSelectedService] = useState("All Services");
   const [currentPage, setCurrentPage] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
 
-  const itemsPerPage = layout === "carousel" ? 3 : maxDisplay;
-  const totalPages = Math.ceil(filteredReviews.length / itemsPerPage);
+  useEffect(() => {
+    if (propReviews && propReviews.length > 0) {
+      setReviews(propReviews);
+      setLoading(false);
+      return;
+    }
+
+    const fetchReviews = async () => {
+      try {
+        const res = await getReviews({ limit: 50 });
+        const apiReviews: ApiReview[] = res.data.data || [];
+        const mapped: ReviewDisplay[] = apiReviews.map((r) => ({
+          id: r.id,
+          name: r.customer_name,
+          text: r.comment || "",
+          rating: r.rating,
+          service: r.service?.name || r.service?.category || "General Service",
+          date: r.created_at,
+          likes: 0,
+          isVerified: true,
+        }));
+        setReviews(mapped.length > 0 ? mapped : DEFAULT_REVIEWS);
+      } catch {
+        setReviews(DEFAULT_REVIEWS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [propReviews]);
+
+  // Build dynamic service categories from fetched reviews
+  const serviceCategories = ["All Services", ...Array.from(new Set(reviews.map((r) => r.service)))];
 
   useEffect(() => {
     if (selectedService === "All Services") {
@@ -141,6 +166,9 @@ export function ReviewsSection({
     }
     setCurrentPage(0);
   }, [selectedService, reviews]);
+
+  const itemsPerPage = layout === "carousel" ? 3 : maxDisplay;
+  const totalPages = Math.ceil(filteredReviews.length / itemsPerPage);
 
   useEffect(() => {
     if (!isAutoPlay || layout !== "carousel") return;
@@ -175,7 +203,7 @@ export function ReviewsSection({
     });
   };
 
-  const ReviewCard = ({ review }: { review: Review }) => (
+  const ReviewCard = ({ review }: { review: ReviewDisplay }) => (
     <Card className="glass-card-hover border-border/30 relative overflow-hidden h-full">
       <Quote className="absolute top-4 right-4 w-8 h-8 text-primary/10" />
       <CardContent className="p-5 flex flex-col h-full">
@@ -241,7 +269,7 @@ export function ReviewsSection({
                   <SelectValue placeholder="Filter by service" />
                 </SelectTrigger>
                 <SelectContent>
-                  {SERVICE_CATEGORIES.map((category) => (
+                  {serviceCategories.map((category) => (
                     <SelectItem key={category} value={category}>
                       {category}
                     </SelectItem>
@@ -252,115 +280,123 @@ export function ReviewsSection({
           </div>
         )}
 
-        {/* Grid Layout */}
-        {layout === "grid" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {visibleReviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-        )}
-
-        {/* Carousel Layout */}
-        {layout === "carousel" && (
-          <div className="relative">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {visibleReviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
-            </div>
-            
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => {
-                    setIsAutoPlay(false);
-                    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
-                  }}
-                  className="rounded-full"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <div className="flex gap-1">
-                  {Array.from({ length: totalPages }).map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setIsAutoPlay(false);
-                        setCurrentPage(i);
-                      }}
-                      className={cn(
-                        "w-2 h-2 rounded-full transition-all",
-                        i === currentPage ? "bg-primary w-6" : "bg-primary/20"
-                      )}
-                    />
-                  ))}
-                </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => {
-                    setIsAutoPlay(false);
-                    setCurrentPage((prev) => (prev + 1) % totalPages);
-                  }}
-                  className="rounded-full"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
+        ) : (
+          <>
+            {/* Grid Layout */}
+            {layout === "grid" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {visibleReviews.map((review) => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
               </div>
             )}
-          </div>
-        )}
 
-        {/* View All Reviews Dialog */}
-        {filteredReviews.length > maxDisplay && (
-          <div className="text-center mt-8">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <MessageSquare className="h-4 w-4" />
-                  View All {filteredReviews.length} Reviews
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-3xl max-h-[80vh]">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <MessageSquare className="h-5 w-5 text-primary" />
-                    All Customer Reviews
-                  </DialogTitle>
-                </DialogHeader>
-                <ScrollArea className="h-[60vh] pr-4">
-                  <div className="grid gap-4">
-                    {filteredReviews.map((review) => (
-                      <ReviewCard key={review.id} review={review} />
-                    ))}
+            {/* Carousel Layout */}
+            {layout === "carousel" && (
+              <div className="relative">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {visibleReviews.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </div>
+                
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-8">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => {
+                        setIsAutoPlay(false);
+                        setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+                      }}
+                      className="rounded-full"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <div className="flex gap-1">
+                      {Array.from({ length: totalPages }).map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            setIsAutoPlay(false);
+                            setCurrentPage(i);
+                          }}
+                          className={cn(
+                            "w-2 h-2 rounded-full transition-all",
+                            i === currentPage ? "bg-primary w-6" : "bg-primary/20"
+                          )}
+                        />
+                      ))}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => {
+                        setIsAutoPlay(false);
+                        setCurrentPage((prev) => (prev + 1) % totalPages);
+                      }}
+                      className="rounded-full"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
                   </div>
-                </ScrollArea>
-              </DialogContent>
-            </Dialog>
-          </div>
-        )}
+                )}
+              </div>
+            )}
 
-        {/* Stats Summary */}
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "Total Reviews", value: reviews.length, icon: MessageSquare },
-            { label: "Average Rating", value: "4.8/5", icon: Star },
-            { label: "Verified Clients", value: "98%", icon: User },
-            { label: "Response Rate", value: "100%", icon: ThumbsUp },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="text-center p-4 rounded-xl bg-linear-to-br from-primary/5 to-accent/5 border border-border/30"
-            >
-              <stat.icon className="h-6 w-6 text-primary mx-auto mb-2" />
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-              <p className="text-xs text-muted-foreground">{stat.label}</p>
+            {/* View All Reviews Dialog */}
+            {filteredReviews.length > maxDisplay && (
+              <div className="text-center mt-8">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      View All {filteredReviews.length} Reviews
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-3xl max-h-[80vh]">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-2">
+                        <MessageSquare className="h-5 w-5 text-primary" />
+                        All Customer Reviews
+                      </DialogTitle>
+                    </DialogHeader>
+                    <ScrollArea className="h-[60vh] pr-4">
+                      <div className="grid gap-4">
+                        {filteredReviews.map((review) => (
+                          <ReviewCard key={review.id} review={review} />
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            )}
+
+            {/* Stats Summary */}
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: "Total Reviews", value: reviews.length, icon: MessageSquare },
+                { label: "Average Rating", value: "4.8/5", icon: Star },
+                { label: "Verified Clients", value: "98%", icon: User },
+                { label: "Response Rate", value: "100%", icon: ThumbsUp },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="text-center p-4 rounded-xl bg-linear-to-br from-primary/5 to-accent/5 border border-border/30"
+                >
+                  <stat.icon className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground">{stat.label}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     </section>
   );

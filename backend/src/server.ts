@@ -18,6 +18,9 @@ import { authenticateAdmin } from './middleware/auth';
 import servicesRouter from './routes/services';
 import bookingsRouter from './routes/bookings';
 import paymentsRouter from './routes/payments';
+import settingsRouter from './routes/settings';
+import staffRouter from './routes/staff';
+import reviewsRouter from './routes/reviews';
 
 const app: Express = express();
 const PORT = env.PORT;
@@ -63,6 +66,9 @@ app.get('/', (_req: Request, res: Response) => {
       services: '/api/services',
       bookings: '/api/bookings',
       payments: '/api/payments',
+      settings: '/api/settings',
+      staff: '/api/staff',
+      reviews: '/api/reviews',
       adminAuth: '/api/admin/login',
     },
   });
@@ -75,6 +81,9 @@ app.post('/api/admin/login', authenticateAdmin);
 app.use('/api/services', servicesRouter);
 app.use('/api/bookings', bookingsRouter);
 app.use('/api/payments', paymentsRouter);
+app.use('/api/settings', settingsRouter);
+app.use('/api/staff', staffRouter);
+app.use('/api/reviews', reviewsRouter);
 
 // ─── 404 Handler ────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {

@@ -109,6 +109,70 @@ CREATE TABLE IF NOT EXISTS processed_webhooks (
 );
 
 -- ============================================================
+-- TABLE: settings
+-- (Stores salon-wide preferences, business hours, and holidays)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS settings (
+  id                      UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  salon_name              TEXT NOT NULL DEFAULT 'Luxe Salon',
+  salon_tagline           TEXT,
+  phone                   TEXT,
+  email                   TEXT,
+  address                 TEXT,
+  city                    TEXT,
+  pincode                 TEXT,
+  website                 TEXT,
+  facebook_url            TEXT,
+  instagram_url           TEXT,
+  whatsapp_number         TEXT,
+  timezone                TEXT NOT NULL DEFAULT 'Asia/Kolkata',
+  currency                TEXT NOT NULL DEFAULT 'INR',
+  advance_booking_days    INTEGER NOT NULL DEFAULT 30 CHECK (advance_booking_days > 0),
+  max_bookings_per_slot   INTEGER NOT NULL DEFAULT 1 CHECK (max_bookings_per_slot > 0),
+  allow_cod               BOOLEAN NOT NULL DEFAULT TRUE,
+  slot_duration_minutes   INTEGER NOT NULL DEFAULT 30 CHECK (slot_duration_minutes > 0),
+  created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at              TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- TABLE: staff
+-- (Team profiles, designations, specialties)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS staff (
+  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name                TEXT NOT NULL,
+  email               TEXT,
+  phone               TEXT,
+  designation         TEXT NOT NULL,
+  specialties         TEXT[] DEFAULT '{}',
+  experience_years    INTEGER NOT NULL DEFAULT 0 CHECK (experience_years >= 0),
+  rating              NUMERIC(2,1) NOT NULL DEFAULT 0 CHECK (rating >= 0 AND rating <= 5),
+  bio                 TEXT,
+  image_url           TEXT,
+  is_active           BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- TABLE: reviews
+-- (Client ratings, comments, and moderation flags)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS reviews (
+  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  booking_id          UUID REFERENCES bookings(id) ON DELETE SET NULL,
+  service_id          UUID REFERENCES services(id) ON DELETE SET NULL,
+  staff_id            UUID REFERENCES staff(id) ON DELETE SET NULL,
+  customer_name       TEXT NOT NULL,
+  rating              INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  comment             TEXT,
+  is_approved         BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
 -- INDEXES (for performance)
 -- ============================================================
 -- Service indexes
@@ -126,11 +190,9 @@ CREATE INDEX IF NOT EXISTS idx_bookings_appointment      ON bookings(appointment
 CREATE INDEX IF NOT EXISTS idx_bookings_phone            ON bookings(customer_phone);
 CREATE INDEX IF NOT EXISTS idx_bookings_booking_number   ON bookings(booking_number);
 
--- COMPOSITE INDEX: Prevent double-booking - unique appointment slots
--- This ensures no two confirmed/pending bookings can exist for same date+time
-CREATE UNIQUE INDEX IF NOT EXISTS idx_bookings_unique_slot
-  ON bookings (appointment_date, appointment_time)
-  WHERE status IN ('pending', 'confirmed', 'in_progress');
+-- REMOVED: Unique slot constraint to support multi-capacity bookings
+-- The backend now checks booking count against max_bookings_per_slot setting
+-- CREATE UNIQUE INDEX IF NOT EXISTS idx_bookings_unique_slot ...
 
 -- Razorpay indexes
 CREATE INDEX IF NOT EXISTS idx_bookings_razorpay_order   ON bookings(razorpay_order_id);
@@ -139,6 +201,16 @@ CREATE INDEX IF NOT EXISTS idx_payments_razorpay_payment ON payments(razorpay_pa
 
 -- Webhook indexes
 CREATE INDEX IF NOT EXISTS idx_webhooks_payment_event ON processed_webhooks(razorpay_payment_id, event_type);
+
+-- Staff indexes
+CREATE INDEX IF NOT EXISTS idx_staff_designation ON staff(designation);
+CREATE INDEX IF NOT EXISTS idx_staff_is_active ON staff(is_active);
+
+-- Reviews indexes
+CREATE INDEX IF NOT EXISTS idx_reviews_service_id ON reviews(service_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_staff_id ON reviews(staff_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_is_approved ON reviews(is_approved);
+CREATE INDEX IF NOT EXISTS idx_reviews_created_at ON reviews(created_at DESC);
 
 -- ============================================================
 -- AUTO-UPDATE updated_at TRIGGER
@@ -157,6 +229,18 @@ CREATE TRIGGER services_updated_at
 
 CREATE TRIGGER bookings_updated_at
   BEFORE UPDATE ON bookings
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER settings_updated_at
+  BEFORE UPDATE ON settings
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER staff_updated_at
+  BEFORE UPDATE ON staff
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER reviews_updated_at
+  BEFORE UPDATE ON reviews
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================================
@@ -221,6 +305,9 @@ ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE processed_webhooks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE staff ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 
 -- Services: public read (only active, not deleted), service_role write
 CREATE POLICY "Services are publicly readable"
@@ -244,6 +331,33 @@ CREATE POLICY "Service role can manage payments"
 -- Webhooks: service_role full access
 CREATE POLICY "Service role can manage webhooks"
   ON processed_webhooks FOR ALL
+  USING (auth.role() = 'service_role');
+
+-- Settings: public read, service_role write
+CREATE POLICY "Settings are publicly readable"
+  ON settings FOR SELECT
+  USING (true);
+
+CREATE POLICY "Service role can manage settings"
+  ON settings FOR ALL
+  USING (auth.role() = 'service_role');
+
+-- Staff: public read (only active), service_role write
+CREATE POLICY "Staff are publicly readable"
+  ON staff FOR SELECT
+  USING (is_active = TRUE);
+
+CREATE POLICY "Service role can manage staff"
+  ON staff FOR ALL
+  USING (auth.role() = 'service_role');
+
+-- Reviews: public read (only approved), service_role write
+CREATE POLICY "Reviews are publicly readable when approved"
+  ON reviews FOR SELECT
+  USING (is_approved = TRUE);
+
+CREATE POLICY "Service role can manage reviews"
+  ON reviews FOR ALL
   USING (auth.role() = 'service_role');
 
 -- ============================================================

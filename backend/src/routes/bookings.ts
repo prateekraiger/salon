@@ -124,7 +124,17 @@ router.get('/available-slots', async (req: Request, res: Response, next: NextFun
       '07:00 PM', '07:30 PM',
     ];
 
-    // Get booked slots for the date
+    // Get max bookings per slot from settings
+    const { data: settingsData } = await supabaseAdmin
+      .from('settings')
+      .select('max_bookings_per_slot')
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .single();
+
+    const maxBookings = settingsData?.max_bookings_per_slot || 1;
+
+    // Get booked slots for the date with counts
     const { data: bookedSlots, error } = await supabaseAdmin
       .from('bookings')
       .select('appointment_time, status')
@@ -133,7 +143,17 @@ router.get('/available-slots', async (req: Request, res: Response, next: NextFun
 
     if (error) throw error;
 
-    const bookedTimes = new Set(bookedSlots?.map((b) => b.appointment_time) || []);
+    // Count bookings per slot
+    const slotCounts: Record<string, number> = {};
+    (bookedSlots || []).forEach((b) => {
+      slotCounts[b.appointment_time] = (slotCounts[b.appointment_time] || 0) + 1;
+    });
+
+    const bookedTimes = new Set(
+      Object.entries(slotCounts)
+        .filter(([_time, count]) => count >= maxBookings)
+        .map(([time]) => time)
+    );
     
     // Check service duration if service_id provided
     let slotDuration = 30; // default 30 min slots
@@ -241,25 +261,34 @@ router.post(
         notes,
       } = req.body as BookingFormData;
 
-      // ─── DOUBLE-BOOKING VALIDATION ─────────────────────────────────────
-      // Check if the slot is already booked
-      const { data: existingBooking, error: checkError } = await supabaseAdmin
+      // ─── MULTI-CAPACITY BOOKING VALIDATION ─────────────────────────────
+      // Check how many bookings exist for this slot and compare to max_bookings_per_slot
+      const { count: existingCount, error: countError } = await supabaseAdmin
         .from('bookings')
-        .select('id, status, customer_name')
+        .select('id', { count: 'exact', head: true })
         .eq('appointment_date', appointment_date)
         .eq('appointment_time', appointment_time)
-        .in('status', ['pending', 'confirmed', 'in_progress'])
-        .maybeSingle();
+        .in('status', ['pending', 'confirmed', 'in_progress']);
 
-      if (checkError) throw checkError;
+      if (countError) throw countError;
 
-      if (existingBooking) {
+      // Get max_bookings_per_slot from settings (default to 1)
+      const { data: settingsData } = await supabaseAdmin
+        .from('settings')
+        .select('max_bookings_per_slot')
+        .order('created_at', { ascending: true })
+        .limit(1)
+        .single();
+
+      const maxBookings = settingsData?.max_bookings_per_slot || 1;
+
+      if (existingCount && existingCount >= maxBookings) {
         const response: ApiResponse = {
           success: false,
-          message: 'This time slot is already booked. Please select a different time.',
+          message: 'This time slot is fully booked. Please select a different time.',
           errors: [
             {
-              msg: `Slot already booked by ${existingBooking.customer_name}`,
+              msg: `Slot is full (${existingCount}/${maxBookings} bookings). Please choose another time.`,
               param: 'appointment_time',
             },
           ],

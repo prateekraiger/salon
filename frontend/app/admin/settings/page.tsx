@@ -92,31 +92,13 @@ export default function SettingsPage() {
         });
       }
     } catch {
-      toast.error("Failed to load settings. Using demo data.");
-      setDemoData();
+      toast.error("Failed to load settings.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const setDemoData = () => {
-    const demoBusinessHours: BusinessHours[] = WEEKDAYS.map((day, index) => ({
-      day, day_index: index, is_open: index !== 0,
-      open_time: "09:00", close_time: "19:00", slot_duration_minutes: 30,
-    }));
-    setBusinessHours(demoBusinessHours);
-    setHolidays([{ date: "2024-12-25", name: "Christmas" }, { date: "2025-01-01", name: "New Year's Day" }]);
-    setFormData({
-      salon_name: "Luxe Salon", salon_tagline: "Where Beauty Meets Excellence",
-      phone: "+91 98765 43210", email: "contact@luxesalon.com",
-      address: "123 Beauty Street, Fashion District", city: "Mumbai", pincode: "400001",
-      website: "https://luxesalon.com", facebook_url: "https://facebook.com/luxesalon",
-      instagram_url: "https://instagram.com/luxesalon", whatsapp_number: "+91 98765 43210",
-      timezone: "Asia/Kolkata", currency: "INR",
-      advance_booking_days: 30, max_bookings_per_slot: 2,
-      allow_cod: true, slot_duration_minutes: 30,
-    });
-  };
+
 
   const handleSaveGeneral = async () => {
     setIsSaving(true);
@@ -124,7 +106,7 @@ export default function SettingsPage() {
       await updateSettings(formData);
       toast.success("General settings saved successfully!");
     } catch {
-      toast.success("Settings would be saved in production.");
+      toast.error("Failed to save settings.");
     } finally {
       setIsSaving(false);
     }
@@ -136,7 +118,7 @@ export default function SettingsPage() {
       await updateBusinessHours(businessHours);
       toast.success("Business hours saved successfully!");
     } catch {
-      toast.success("Business hours would be saved in production.");
+      toast.error("Failed to save business hours.");
     } finally {
       setIsSaving(false);
     }
@@ -153,9 +135,7 @@ export default function SettingsPage() {
       setNewHolidayDate(""); setNewHolidayName(""); setShowAddHoliday(false);
       toast.success("Holiday added successfully!");
     } catch {
-      setHolidays([...holidays, { date: newHolidayDate, name: newHolidayName }]);
-      setNewHolidayDate(""); setNewHolidayName(""); setShowAddHoliday(false);
-      toast.success("Holiday would be saved in production.");
+      toast.error("Failed to add holiday.");
     }
   };
 
@@ -165,8 +145,7 @@ export default function SettingsPage() {
       setHolidays(holidays.filter((h) => h.date !== date));
       toast.success("Holiday removed successfully!");
     } catch {
-      setHolidays(holidays.filter((h) => h.date !== date));
-      toast.success("Holiday would be removed in production.");
+      toast.error("Failed to remove holiday.");
     }
   };
 
